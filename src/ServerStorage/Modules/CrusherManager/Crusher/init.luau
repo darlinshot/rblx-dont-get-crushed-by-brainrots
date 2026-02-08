@@ -3,7 +3,7 @@ local Errors = require(script.Errors)
 local Crusher = {}
 Crusher.__index = Crusher
 
-function Crusher.New(model: Model, spawnPosition: Vector3, targetPosition: Vector3)
+function Crusher.New(model: Model, startPosition: Vector3, goalPosition: Vector3)
     local root = model.PrimaryPart
     if not root then warn(Errors.NO_ROOT_PART) return end
 
@@ -18,12 +18,12 @@ function Crusher.New(model: Model, spawnPosition: Vector3, targetPosition: Vecto
 
     self.Speed = speed
     self.Force = Crusher.CalculateForce(speed, 1)
-    self.TargetPosition = targetPosition
+    self.GoalPosition = goalPosition
 
     self.ERROR_MARGIN = 0.2
     self.REACHED_TARGET = false
 
-    model:PivotTo(CFrame.new(spawnPosition))
+    model:PivotTo(CFrame.new(startPosition))
 
     setmetatable(self, Crusher)
     return self
@@ -39,9 +39,9 @@ function Crusher:Update(delta: number)
     local model = self.Model
 
     local currentPos = root.Position
-    local targetPos = self.TargetPosition
+    local goalPos = self.GoalPosition
 
-    local toTarget = targetPos - currentPos
+    local toTarget = goalPos - currentPos
 
     -- Finished moving
     local distance = toTarget.Magnitude

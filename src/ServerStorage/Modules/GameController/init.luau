@@ -35,6 +35,7 @@ function GameController.StartGame()
 
     GameController.Thread = task.spawn(function()
         CrusherManager.Enable()
+        
         while GameController.Running == true do
             local active_worlds = Worlds.GetActiveWorlds()
             if not active_worlds then warn(Errors.NO_ACTIVE_WORLDS) return end

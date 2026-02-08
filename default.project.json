@@ -6,7 +6,7 @@
       "$path": "src/ReplicatedStorage"
     },
     "ServerScriptService": {
-      "$path": "src/Server"
+      "$path": "src/ServerScriptService"
     },
     "ServerStorage": {
       "$path": "src/ServerStorage"

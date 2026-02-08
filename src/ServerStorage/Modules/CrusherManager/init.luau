@@ -1,20 +1,12 @@
 local RunService = game:GetService("RunService")
-local ServerStorage = game.ServerStorage
 
 -- / WORKSPACE
 local GAME_SYSTEM = workspace.GameSystem
 local CRUSHERS_HOLDER = GAME_SYSTEM.Crushers
 
--- / ASSETS
-local ASSETS = ServerStorage.Assets
-local CRUSHER_MODELS = ASSETS.Models.Crushers
-
 -- / MODULES
-local MODULES = ServerStorage.Modules
-
-local Crusher = require(MODULES.Crusher)
-
 local MAIN = script
+local Crusher = require(MAIN.Crusher)
 local Errors = require(MAIN.Errors)
 
 -- / MAIN
