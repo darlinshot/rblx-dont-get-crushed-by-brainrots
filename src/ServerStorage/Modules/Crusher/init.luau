@@ -1,6 +1,7 @@
 local Errors = require(script.Errors)
 
 local Crusher = {}
+Crusher.__index = Crusher
 
 function Crusher.New(model: Model, spawnPosition: Vector3, targetPosition: Vector3)
     local root = model.PrimaryPart
@@ -38,16 +39,18 @@ function Crusher:Update(delta: number)
     local model = self.Model
 
     local currentPos = root.Position
-    local target = self.TargetPosition
+    local targetPos = self.TargetPosition
 
-    local toTarget = target - currentPos
+    local toTarget = targetPos - currentPos
+
+    -- Finished moving
     local distance = toTarget.Magnitude
-
     if distance <= self.ERROR_MARGIN then
         self.REACHED_TARGET = true
         return
     end
 
+    -- Moving
     local direction = toTarget.Unit
     local moveDistance = math.min(self.Speed * delta, distance)
 

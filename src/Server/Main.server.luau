@@ -6,3 +6,4 @@ local GameController = require(MODULES.GameController)
 
 -- / MAIN
 GameController.Init()
+GameController.StartGame()

@@ -1,12 +1,11 @@
-local ReplicatedStorage = game.ReplicatedStorage
 local ServerStorage = game.ServerStorage
 
 -- / ASSETS
 local ASSETS = ServerStorage.Assets
-local CRUSHER_MODELS = ASSETS.MODELS.CRUSHERS:GetChildren()
+local CRUSHER_MODELS = ASSETS.Models.Crushers:GetChildren()
 
 -- / MODULES
-local MODULES = ReplicatedStorage.Modules
+local MODULES = ServerStorage.Modules
 
 local CrusherManager = require(MODULES.CrusherManager)
 local Worlds = require(MODULES.Worlds)
@@ -36,13 +35,15 @@ function GameController.StartGame()
 
     GameController.Thread = task.spawn(function()
         while GameController.Running == true do
+            CrusherManager.Enable()
+
             local active_worlds = Worlds.GetActiveWorlds()
-            if not active_worlds or #active_worlds < 1 then warn(Errors.NO_ACTIVE_WORLDS) return end
+            if not active_worlds then warn(Errors.NO_ACTIVE_WORLDS) return end
             
             for _, world in active_worlds do
                 -- TODO: SORT AND GACHA BASED ON RARITY
 
-                local model = Random:NextInteger(1, #CRUSHER_MODELS)
+                local model = CRUSHER_MODELS[Random:NextInteger(1, #CRUSHER_MODELS)]
 
                 local goalPos = world.GoalPosition.Position
                 local startPos = world.StartPosition.Position
@@ -50,12 +51,14 @@ function GameController.StartGame()
                 CrusherManager.NewCrusher(model, startPos, goalPos)
             end
 
-            CrusherManager.UpdateAll()
-
             task.wait(Config.SpawnIntervals)
         end
     end)
 end
 
+function GameController.EndGame()
+    GameController.Running = false
+    CrusherManager.Disable()
+end
 
 return GameController

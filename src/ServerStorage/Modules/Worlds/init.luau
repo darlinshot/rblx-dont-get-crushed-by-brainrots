@@ -13,7 +13,7 @@ Worlds.ActiveWorlds = {}
 Worlds.InactiveWorlds = {}
 
 function Worlds.Init()
-    for _, worldModel in WORLDS do
+    for _, worldModel in WORLDS:GetChildren() do
         local worldName = worldModel.Name
         if Worlds.InactiveWorlds[worldName] or Worlds.ActiveWorlds[worldName] then
             warn(string.format(Errors.WORLD_EXISTS, worldName))
@@ -28,10 +28,16 @@ function Worlds.Init()
             ActivePlayers = 0,
 
             GoalPosition = goalPos,
-            StartPos = startPos,
+            StartPosition = startPos,
             PlayerSpawnPosition = plrSpawnPos
         }
         table.insert(Worlds.WorldNames, worldName)
+        
+        -- TODO: Delete this part and actually create World Active logic
+        -- Player leave and join
+        -- Player teleport
+
+        Worlds.SetWorldActive(worldName)
     end
 end
 
