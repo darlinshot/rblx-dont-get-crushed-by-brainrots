@@ -25,6 +25,8 @@ function Worlds.Init()
         local plrSpawnPos = worldModel.PlayerSpawnPosition
 
         Worlds.InactiveWorlds[worldName] = {
+            ActivePlayers = 0,
+
             GoalPosition = goalPos,
             StartPos = startPos,
             PlayerSpawnPosition = plrSpawnPos
@@ -59,6 +61,14 @@ function Worlds.SetWorldInactive(worldName: string)
     end
     Worlds.ActiveWorlds[worldName] = nil
     Worlds.InactiveWorlds[worldName] = world
+end
+
+function Worlds.GetActiveWorlds()
+    return Worlds.ActiveWorlds
+end
+
+function Worlds.GetInactiveWorlds()
+    return Worlds.InactiveWorlds
 end
 
 return Worlds

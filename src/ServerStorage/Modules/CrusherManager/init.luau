@@ -1,6 +1,16 @@
 local RunService = game:GetService("RunService")
+local ReplicatedStorage = game.ReplicatedStorage
+local ServerStorage = game.ServerStorage
+
+-- / ASSETS
+local ASSETS = ServerStorage.Assets
+local CRUSHER_MODELS = ASSETS.MODELS.CRUSHERS
 
 -- / MODULES
+local MODULES = ReplicatedStorage.Modules
+
+local Crusher = require(MODULES.Crusher)
+
 local MAIN = script
 local Errors = require(MAIN.Errors)
 
@@ -9,6 +19,12 @@ local CrusherManager = {}
 CrusherManager.ActiveCrushers = {}
 CrusherManager.InactiveCrushers = {}
 CrusherManager.UpdateConnection = nil
+
+function CrusherManager.NewCrusher(model: Model, startPos: Vector3, targetPos: Vector3)
+    local crusher = Crusher.New(model, startPos, targetPos)
+    
+    CrusherManager.SetCrusherActive(crusher)
+end
 
 function CrusherManager.SetCrusherActive(crusher)
     local activeIndex = table.find(CrusherManager.ActiveCrushers, crusher) 
@@ -50,11 +66,23 @@ function CrusherManager.SetAllInactive()
     end
 end
 
+function CrusherManager.DeleteCrusher(crusher)
+    local inactiveIndex = table.find(CrusherManager.InactiveCrushers, crusher)
+    if inactiveIndex then table.remove(CrusherManager.InactiveCrushersm, inactiveIndex) end
 
-function CrusherManager.Update(delta: number, crusher)
-    crusher:Update(delta)
+    local activeIndex = table.find(CrusherManager.ActiveCrushers, crusher)
+    if activeIndex then table.remove(CrusherManager.ActiveCrushers, activeIndex) end
+
+    crusher:Destroy()
 end
 
+function CrusherManager.Update(delta: number, crusher)
+    if crusher.REACHED_TARGET == true then
+
+        crusher:Destroy()
+    end
+    crusher:Update(delta)
+end
 
 function CrusherManager.UpdateAll(delta: number)
     for _, crusher in CrusherManager.ActiveCrushers do

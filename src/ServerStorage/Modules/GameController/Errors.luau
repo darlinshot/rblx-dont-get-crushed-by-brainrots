@@ -1,5 +1,6 @@
 local Errors = {
-    WORLD_NOT_EXIST = "World doesn't exist."
+    NO_ACTIVE_WORLDS = "No worlds are active.",
+    
 }
 
 return Errors

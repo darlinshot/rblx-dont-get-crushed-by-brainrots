@@ -2,10 +2,13 @@ local Errors = require(script.Errors)
 
 local Crusher = {}
 
-function Crusher.New(model: Model, speed: number, targetPosition: Vector3)
+function Crusher.New(model: Model, spawnPosition: Vector3, targetPosition: Vector3)
     local root = model.PrimaryPart
     if not root then warn(Errors.NO_ROOT_PART) return end
 
+    local speed = model:GetAttribute("Speed")
+    if not speed then warn(Errors.MISSING_SPEED_ATTRIBUTE) return end
+    
     local self = {}
     self.Name = model.Name
 
@@ -15,6 +18,11 @@ function Crusher.New(model: Model, speed: number, targetPosition: Vector3)
     self.Speed = speed
     self.Force = Crusher.CalculateForce(speed, 1)
     self.TargetPosition = targetPosition
+
+    self.ERROR_MARGIN = 0.2
+    self.REACHED_TARGET = false
+
+    model:PivotTo(CFrame.new(spawnPosition))
 
     setmetatable(self, Crusher)
     return self
@@ -26,13 +34,26 @@ function Crusher.CalculateForce(speed: number, k: number)
 end
 
 function Crusher:Update(delta: number)
-    local model: Model = self.Model
-    local root: BasePart = self.Root
+    local root = self.Root
+    local model = self.Model
 
-    local speed = self.Speed
-    local currentCF = root.CFrame
+    local currentPos = root.Position
+    local target = self.TargetPosition
 
-    model:PivotTo(currentCF * root.CFrame.LookVector*speed*delta)
+    local toTarget = target - currentPos
+    local distance = toTarget.Magnitude
+
+    if distance <= self.ERROR_MARGIN then
+        self.REACHED_TARGET = true
+        return
+    end
+
+    local direction = toTarget.Unit
+    local moveDistance = math.min(self.Speed * delta, distance)
+
+    local newPosition = currentPos + direction * moveDistance
+
+    model:PivotTo(CFrame.new(newPosition, newPosition + direction))
 end
 
 function Crusher:Destroy()
