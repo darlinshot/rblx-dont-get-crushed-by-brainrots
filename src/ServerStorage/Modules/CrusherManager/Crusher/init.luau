@@ -8,8 +8,8 @@ function Crusher.New(model: Model, startPosition: Vector3, goalPosition: Vector3
     if not root then warn(Errors.NO_ROOT_PART) return end
 
     local speed = model:GetAttribute("Speed")
-    if not speed then warn(Errors.MISSING_SPEED_ATTRIBUTE) return end
-    
+    if not speed then warn(string.format(Errors.MISSING_ATTRIBUTE, "Speed")) return end
+
     local self = {}
     self.Name = model.Name
 
@@ -57,6 +57,17 @@ function Crusher:Update(delta: number)
     local newPosition = currentPos + direction * moveDistance
 
     model:PivotTo(CFrame.new(newPosition, newPosition + direction))
+end
+
+function Crusher:GetRootPart()
+    return self.Root
+end
+
+function Crusher:GetDamage()
+    -- Speed = damage
+    -- Change if you want
+    
+    return self.Speed
 end
 
 function Crusher:Destroy()

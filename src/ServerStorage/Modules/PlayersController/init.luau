@@ -1,7 +1,6 @@
 local Players = game:GetService("Players")
 
 -- / SERVICES
-local Players = game.Players
 
 -- / MODULES
 local MAIN = script
@@ -13,7 +12,7 @@ local PlayersController = {}
 PlayersController.Controllers = {}
 
 function PlayersController.Init()
-    PlayersController.PlayerAdded = PlayersController.PlayerAdded:Connect(function(plr)
+    PlayersController.PlayerAdded = Players.PlayerAdded:Connect(function(plr)
         local controller = PlayersController.Controllers[plr.UserId]
         if controller and controller.Destroy then
             controller:Destroy()
@@ -24,7 +23,7 @@ function PlayersController.Init()
         PlayersController.Controllers[plr.UserId] = Player.New(plr)
     end)
 
-    PlayersController.PlayerRemoving = PlayersController.PlayerRemoving:Connect(function(plr)
+    PlayersController.PlayerRemoving = Players.PlayerRemoving:Connect(function(plr)
         local controller = PlayersController.Controllers[plr.UserId]
         if not controller then return end
 

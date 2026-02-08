@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 -- / WORKSPACE
@@ -8,12 +9,16 @@ local CRUSHERS_HOLDER = GAME_SYSTEM.Crushers
 local MAIN = script
 local Crusher = require(MAIN.Crusher)
 local Errors = require(MAIN.Errors)
+local Config = require(MAIN.Config)
 
 -- / MAIN
 local CrusherManager = {}
+
 CrusherManager.ActiveCrushers = {}
 CrusherManager.InactiveCrushers = {}
 CrusherManager.UpdateConnection = nil
+CrusherManager.LastHit = {}
+
 
 function CrusherManager.NewCrusher(model: Model, startPos: Vector3, targetPos: Vector3)
     model = model:Clone()
@@ -78,12 +83,46 @@ function CrusherManager.DeleteCrusher(crusher)
     crusher:Destroy()
 end
 
+--
+-- UPDATE FUNCTION
+--
+
 function CrusherManager.Update(delta: number, crusher)
     if crusher.REACHED_TARGET == true then
         CrusherManager.DeleteCrusher(crusher)
-        return
+    else
+        crusher:Update(delta)
     end
-    crusher:Update(delta)
+
+    local crusherRoot = crusher:GetRootPart()
+    print(crusherRoot)
+    local plr_root_parts = workspace:GetPartsInPart(crusherRoot)
+    
+    for _, root in plr_root_parts do
+        local char = root.Parent
+        local plr = Players:GetPlayerFromCharacter(char)
+        if not plr then
+            warn("Not a player's character.")
+            return
+        end
+        local hum = char:FindFirstChild("Humanoid")
+        if not hum then
+            warn("No humanoid found.")
+            return
+        end
+
+        local lastHit = CrusherManager.PlayersOnDamageCooldown[plr.UserId]
+        if not lastHit then
+            CrusherManager.LastHit[plr.UserId] = os.clock()
+            return
+        end
+
+        local cooldown = os.clock() - lastHit
+        if cooldown < Config.DAMAGE_COOLDOWN then return end
+        
+        hum:TakeDamage(crusher:GetDamage())
+        CrusherManager.LastHit[plr.UserId] = os.clock()
+    end
 end
 
 function CrusherManager.UpdateAll(delta: number)
