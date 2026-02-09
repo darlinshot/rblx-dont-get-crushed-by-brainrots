@@ -19,7 +19,6 @@ CrusherManager.InactiveCrushers = {}
 CrusherManager.UpdateConnection = nil
 CrusherManager.LastHit = {}
 
-
 function CrusherManager.NewCrusher(model: Model, startPos: Vector3, targetPos: Vector3)
     model = model:Clone()
     local crusher = Crusher.New(model, startPos, targetPos)
@@ -35,7 +34,7 @@ function CrusherManager.SetCrusherActive(crusher)
     
     local inactiveIndex = table.find(CrusherManager.InactiveCrushers, crusher)
     if inactiveIndex then
-        table.remove(CrusherManager.ActiveCrushers, inactiveIndex)
+        table.remove(CrusherManager.InactiveCrushers, inactiveIndex)
     end
 
     table.insert(CrusherManager.ActiveCrushers, crusher)
@@ -90,38 +89,35 @@ end
 function CrusherManager.Update(delta: number, crusher)
     if crusher.REACHED_TARGET == true then
         CrusherManager.DeleteCrusher(crusher)
+        return
     else
         crusher:Update(delta)
     end
 
     local crusherRoot = crusher:GetRootPart()
-    print(crusherRoot)
-    local plr_root_parts = workspace:GetPartsInPart(crusherRoot)
-    
+    local plr_root_parts = workspace:GetPartsInPart(crusherRoot, Config.OVERLAP_PARAMS)
     for _, root in plr_root_parts do
         local char = root.Parent
         local plr = Players:GetPlayerFromCharacter(char)
         if not plr then
             warn("Not a player's character.")
-            return
+            continue
         end
         local hum = char:FindFirstChild("Humanoid")
         if not hum then
             warn("No humanoid found.")
-            return
+            continue
         end
 
-        local lastHit = CrusherManager.PlayersOnDamageCooldown[plr.UserId]
-        if not lastHit then
-            CrusherManager.LastHit[plr.UserId] = os.clock()
-            return
+        local lastHit = CrusherManager.LastHit[plr.UserId]
+        local now = os.clock()
+
+        if lastHit and (now - lastHit) < Config.DAMAGE_COOLDOWN then
+            continue
         end
 
-        local cooldown = os.clock() - lastHit
-        if cooldown < Config.DAMAGE_COOLDOWN then return end
-        
         hum:TakeDamage(crusher:GetDamage())
-        CrusherManager.LastHit[plr.UserId] = os.clock()
+        CrusherManager.LastHit[plr.UserId] = now
     end
 end
 
