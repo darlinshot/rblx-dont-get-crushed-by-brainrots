@@ -19,7 +19,6 @@ end
 
 function Player:Destroy()
     self.CharacterAddedConnection:Disconnect()
-
 end
 
 return Player

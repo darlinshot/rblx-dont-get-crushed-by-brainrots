@@ -31,14 +31,14 @@ local eventFunctions = MAIN.EventFunctions
 
 -- / MAIN
 local REController = {}
-REController.Events = {}
+REController.LoadedEvents = {}
 
 function REController.Load(remoteEvent: RemoteEvent)
     if not remoteEvent then return end
 
     local name = remoteEvent.Name
 
-    local load = REController.Events[name]
+    local load = REController.LoadedEvents[name]
     if load then
         warn(Errors.RE_ALREADY_LOADED)
         return
@@ -54,7 +54,7 @@ function REController.Load(remoteEvent: RemoteEvent)
     local func = require(functionModule)
 
     load:AddFunction(func)
-    REController.Events[name] = load
+    REController.LoadedEvents[name] = load
 end
 
 function REController.LoadAll()
@@ -75,7 +75,7 @@ function REController.Unload(remoteEvent: RemoteEvent)
     
     local name = remoteEvent.Name
 
-    local events = REController.Events
+    local events = REController.LoadedEvents
     local load: EventModule = events[remoteEvent]
     if not load then warn(`RemoteEvent {name} has not been loaded.`); return end
     
@@ -85,7 +85,7 @@ function REController.Unload(remoteEvent: RemoteEvent)
 end
 
 function REController.UnloadAll()
-    local events = REController.Events
+    local events = REController.LoadedEvents
     for remoteEvent, _: EventModule in events do
         REController.Unload(remoteEvent)
     end

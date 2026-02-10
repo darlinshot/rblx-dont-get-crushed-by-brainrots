@@ -1,5 +1,10 @@
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
+
+-- / ASSETS
+local REMOTES = ReplicatedStorage.Remotes
+local REMOTE_EVENTS = REMOTES.RemoteEvents
 
 -- / WORKSPACE
 local GAME_SYSTEM = workspace.GameSystem
@@ -10,6 +15,9 @@ local MAIN = script
 local Crusher = require(MAIN.Crusher)
 local Errors = require(MAIN.Errors)
 local Config = require(MAIN.Config)
+
+-- / REMOTE EVENTS
+local crushedEvent = REMOTE_EVENTS.Crushed
 
 -- / MAIN
 local CrusherManager = {}
@@ -98,6 +106,7 @@ function CrusherManager.Update(delta: number, crusher)
     local plr_root_parts = workspace:GetPartsInPart(crusherRoot, Config.OVERLAP_PARAMS)
     for _, root in plr_root_parts do
         local char = root.Parent
+
         local plr = Players:GetPlayerFromCharacter(char)
         if not plr then
             warn("Not a player's character.")
@@ -109,15 +118,23 @@ function CrusherManager.Update(delta: number, crusher)
             continue
         end
 
-        local lastHit = CrusherManager.LastHit[plr.UserId]
+        local lastHit = CrusherManager.LastHit["Player_"..plr.UserId]
         local now = os.clock()
 
         if lastHit and (now - lastHit) < Config.DAMAGE_COOLDOWN then
             continue
         end
 
-        hum:TakeDamage(crusher:GetDamage())
-        CrusherManager.LastHit[plr.UserId] = now
+        local damage = crusher:GetDamage()
+
+        local args = {
+            KnockbackForce = (crusherRoot.CFrame.LookVector+Vector3.new(0, 1, 0))*(damage*root.AssemblyMass),
+            RagdollDuration = Config.STUN_DURATION
+        }    
+
+        hum:TakeDamage(damage)
+        CrusherManager.LastHit["Player_"..plr.UserId] = now
+        crushedEvent:FireClient(plr, args)
     end
 end
 

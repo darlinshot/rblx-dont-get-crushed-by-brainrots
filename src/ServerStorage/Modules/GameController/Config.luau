@@ -1,5 +1,5 @@
 local Config = {
-    SPAWN_INTERVALS = 5
+    SPAWN_INTERVALS = 10
 }
 
 return Config

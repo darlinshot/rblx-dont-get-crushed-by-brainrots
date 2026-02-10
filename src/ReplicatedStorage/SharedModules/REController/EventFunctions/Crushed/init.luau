@@ -5,14 +5,27 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local plr = Players.LocalPlayer
 
 -- / MODULES
-local SHARED_MODULES = ReplicatedStorage.SharedModules
-local Ragdoll = require(SHARED_MODULES.Ragdoll)
+
 
 -- / MAIN
 return function(args)
+    local ragdollDuration = args.RagdollDuration
+    local knockbackForce = args.KnockbackForce
+    if not knockbackForce then return end
+
     local char = plr.Character or plr.CharacterAdded:Wait()
     if not char then return end
+    
+    local root = char:FindFirstChild("HumanoidRootPart")
+    local hum: Humanoid = char:FindFirstChild("Humanoid")
+    if not (root and hum) then return end
 
     -- TODO: Ragdoll and then knock back
+    root:ApplyImpulse(knockbackForce)
+    hum:ChangeState(Enum.HumanoidStateType.Physics)
     
+    if ragdollDuration then
+        task.wait(ragdollDuration)
+        hum:ChangeState(Enum.HumanoidStateType.GettingUp)
+    end
 end

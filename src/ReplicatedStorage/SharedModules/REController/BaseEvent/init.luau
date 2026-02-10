@@ -13,7 +13,7 @@ function BaseEvent.New(remoteEvent: RemoteEvent)
 
     BaseEvent.Connection = remoteEvent.OnClientEvent:Connect(function(args)
         for _, func in self.EventFunctions do
-            BaseEvent.Activate(func, args)
+            BaseEvent:Activate(func, args)
         end
     end)
 

@@ -13,23 +13,23 @@ PlayersController.Controllers = {}
 
 function PlayersController.Init()
     PlayersController.PlayerAdded = Players.PlayerAdded:Connect(function(plr)
-        local controller = PlayersController.Controllers[plr.UserId]
+        local controller = PlayersController.Controllers["Player_"..plr.UserId]
         if controller and controller.Destroy then
             controller:Destroy()
             table.clear(controller)
         end
         controller = nil
 
-        PlayersController.Controllers[plr.UserId] = Player.New(plr)
+        PlayersController.Controllers["Player_"..plr.UserId] = Player.New(plr)
     end)
 
     PlayersController.PlayerRemoving = Players.PlayerRemoving:Connect(function(plr)
-        local controller = PlayersController.Controllers[plr.UserId]
+        local controller = PlayersController.Controllers["Player_"..plr.UserId]
         if not controller then return end
 
         controller:Destroy()
         controller = nil
-        PlayersController.Controllers[plr.UserId] = nil
+        PlayersController.Controllers["Player_"..plr.UserId] = nil
     end)
 end
 
