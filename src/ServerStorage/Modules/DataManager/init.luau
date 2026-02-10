@@ -4,6 +4,9 @@ local ServerStorage = game:GetService("ServerStorage")
 local MODULES = ServerStorage.Modules
 local ProfileStore = require(MODULES.ProfileStore)
 
+local MAIN = script
+local Config = require(MAIN.Config)
+
 -- / MODULE
 local DataManager = {}
 DataManager.PlayerData = {}
