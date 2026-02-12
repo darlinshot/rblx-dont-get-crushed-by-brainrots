@@ -39,7 +39,9 @@ function DataManager.AddPlayer(plr: Player)
         end
 
         print(string.format(Errors.LOAD_PROFILE_SUCCESS, plr.Name))
-
+        
+        DataManager.DataProfiles["Player_"..plr.UserId] = profile
+        
         -- This data is for live game editing.
         DataManager.PlayerData["Player_"..plr.UserId] = profile.Data
 

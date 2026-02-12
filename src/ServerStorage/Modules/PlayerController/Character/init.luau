@@ -16,6 +16,8 @@ function Character.OnCharacterAdded(char: Model)
     hum.BreakJointsOnDeath = false
 
     root.CollisionGroup = "CharacterRootPart"
+
+    root:SetAttribute("SetupComplete")
 end
 
 return Character

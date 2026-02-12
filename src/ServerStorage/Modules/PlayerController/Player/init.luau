@@ -21,9 +21,16 @@ function Player.New(plr: Player)
        print(Errors.DATA_PROFILE_CREATION_FAILED) 
        return
     end
+
     local self = {}
     self.DataProfile = profile
     self.CharacterAddedConnection = plr.CharacterAdded:Connect(Character.OnCharacterAdded)
+
+    if plr.Character then
+        if not plr.Character:GetAttribute("SetupComplete") == true then
+            Character.OnCharacterAdded(plr.Character)
+        end
+    end
 
     setmetatable(self, Player)
     return self

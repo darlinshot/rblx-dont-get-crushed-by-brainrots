@@ -8,7 +8,7 @@ local CRUSHER_MODELS = ASSETS.Models.Crushers:GetChildren()
 local MODULES = ServerStorage.Modules
 
 local CrusherManager = require(MODULES.CrusherManager)
-local Worlds = require(MODULES.Worlds)
+local WorldController = require(MODULES.WorldController)
 
 local MAIN = script
 local Errors = require(MAIN.Errors)
@@ -23,7 +23,7 @@ GameController.Running = false
 GameController.Thread = nil
 
 function GameController.Init()
-    Worlds.Init()
+    WorldController.Init()
 
     GameController.StartGame()
 end
@@ -37,7 +37,7 @@ function GameController.StartGame()
         CrusherManager.Enable()
 
         while GameController.Running == true do
-            local active_worlds = Worlds.GetActiveWorlds()
+            local active_worlds = WorldController.GetActiveWorlds()
             if not active_worlds then warn(Errors.NO_ACTIVE_WORLDS) return end
             
             for _, world in active_worlds do
@@ -45,8 +45,8 @@ function GameController.StartGame()
 
                 local model = CRUSHER_MODELS[Random:NextInteger(1, #CRUSHER_MODELS)]
 
-                local goalPos = world.GoalPosition.Position
-                local startPos = world.StartPosition.Position
+                local goalPos = world.GoalPosition
+                local startPos = world.StartPosition
 
                 CrusherManager.NewCrusher(model, startPos, goalPos)
             end

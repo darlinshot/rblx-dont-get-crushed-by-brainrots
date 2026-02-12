@@ -32,8 +32,11 @@ function ZoneController.AddZone(zonePart: Part)
     if zone_functions.OnPlayerEntered then
         zone.playerEntered:Connect(zone_functions.OnPlayerEntered)
     end
+    if zone_functions.OnPlayerExit then
+        zone.playerExited:Connect(zone_functions.OnPlayerExit)
+    end
 
-    ZoneController.Zones[zonePart] = zone    
+    ZoneController.Zones[zonePart] = zone
     return zone
 end
 

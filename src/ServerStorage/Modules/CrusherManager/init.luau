@@ -101,12 +101,10 @@ function CrusherManager.Update(delta: number, crusher)
     else
         crusher:Update(delta)
     end
-
     local crusherRoot = crusher:GetRootPart()
     local plr_root_parts = workspace:GetPartsInPart(crusherRoot, Config.OVERLAP_PARAMS)
     for _, root in plr_root_parts do
         local char = root.Parent
-
         local plr = Players:GetPlayerFromCharacter(char)
         if not plr then
             warn("Not a player's character.")
