@@ -86,7 +86,7 @@ end
 
 function REController.UnloadAll()
     local events = REController.LoadedEvents
-    for remoteEvent, _: EventModule in events do
+    for remoteEvent, _ in events do
         REController.Unload(remoteEvent)
     end
 end
