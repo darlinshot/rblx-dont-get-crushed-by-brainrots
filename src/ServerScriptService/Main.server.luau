@@ -2,11 +2,11 @@ local ServerStorage = game.ServerStorage
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local PlayersController = require(MODULES.PlayersController)
+local PlayerController = require(MODULES.PlayerController)
 local GameController = require(MODULES.GameController)
 
 -- / MAIN
-PlayersController.Init()
+PlayerController.Init()
 
 GameController.Init()
 GameController.StartGame()

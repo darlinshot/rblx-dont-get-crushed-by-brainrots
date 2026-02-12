@@ -28,7 +28,7 @@ function DataManager.AddPlayer(plr: Player)
         })
     end
     
-    if profile ~= nil then
+    if profile then
         profile:AddUserId(plr.UserId)
         profile:Reconcile()
         
@@ -42,10 +42,49 @@ function DataManager.AddPlayer(plr: Player)
 
         -- This data is for live game editing.
         DataManager.PlayerData["Player_"..plr.UserId] = profile.Data
+
+        return profile
     else
         -- Roblox server shutting down
+        warn(Errors.LOAD_PROFILE_FAILED)
         plr:Kick(Errors.LOAD_PROFILE_FAILED)
     end
+end
+
+function DataManager.RemovePlayer(plr: Player)
+    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+    if profile then
+        profile:EndSession()
+
+        DataManager.DataProfiles["Player_"..plr.UserId] = nil
+    end
+
+    local data = DataManager.PlayerData["Player_"..plr.UserId]
+    if data then
+        DataManager.PlayerData["Player_"..plr.UserId] = nil 
+    end
+end
+
+function DataManager.GetPlayerProfile(plr: Player)
+    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+    if not profile then
+        return DataManager.AddPlayer(plr)
+    end
+
+    return profile
+end
+
+function DataManager.GetPlayerData(plr: Player)
+    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+    if not profile then
+        profile = DataManager.AddPlayer(plr)
+        if not profile then
+            warn(Errors.LOAD_PROFILE_FAILED)
+            plr:Kick(Errors.LOAD_PROFILE_FAILED)
+        end
+    end
+
+    return profile.Data
 end
 
 return DataManager
