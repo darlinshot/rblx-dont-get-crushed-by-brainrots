@@ -48,8 +48,8 @@ function DataManager.AddPlayer(plr: Player)
         return profile
     else
         -- Roblox server shutting down
-        warn(Errors.LOAD_PROFILE_FAILED)
         plr:Kick(Errors.LOAD_PROFILE_FAILED)
+        error(Errors.LOAD_PROFILE_FAILED)
     end
 end
 
@@ -63,7 +63,7 @@ function DataManager.RemovePlayer(plr: Player)
 
     local data = DataManager.PlayerData["Player_"..plr.UserId]
     if data then
-        DataManager.PlayerData["Player_"..plr.UserId] = nil 
+        DataManager.PlayerData["Player_"..plr.UserId] = nil
     end
 end
 
@@ -81,8 +81,8 @@ function DataManager.GetPlayerData(plr: Player)
     if not profile then
         profile = DataManager.AddPlayer(plr)
         if not profile then
-            warn(Errors.LOAD_PROFILE_FAILED)
             plr:Kick(Errors.LOAD_PROFILE_FAILED)
+            error(Errors.LOAD_PROFILE_FAILED)
         end
     end
 

@@ -1,3 +1,4 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 --[[
 local packet = {
         Action = action,
@@ -15,19 +16,16 @@ local packet = {
         CashCost = cashCost
     }]]
 
--- / MAIN
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- / MODULES
+local SHARED_MODULES = ReplicatedStorage.SharedModules
+local UIController = require(SHARED_MODULES.UIController)
+
 local MAIN = script
-local ACTION_MODULES = MAIN.Actions
+local Config = require(MAIN.Config)
 
-local actions = {}
-for _, actionModule in ACTION_MODULES:GetChildren() do
-    if actions[actionModule.Name] then continue end
-
-    actions[actionModule.Name] = require(actionModule)
-end
-
-return function (args)
-    local action = args.Action
-    if not action then return end
-
+-- / MAIN
+return function (packet)
+    UIController.Render(Config.UI_NAME, packet)
 end

@@ -18,7 +18,7 @@ Player.__index = Player
 function Player.New(plr: Player)
     local profile = DataManager.AddPlayer(plr)
     if not profile then
-       print(Errors.DATA_PROFILE_CREATION_FAILED) 
+       print(string.format(Errors.DATA_PROFILE_CREATION_FAILED, plr.Name)) 
        return
     end
 
