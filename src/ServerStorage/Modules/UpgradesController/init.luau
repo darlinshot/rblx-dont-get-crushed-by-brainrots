@@ -44,7 +44,7 @@ UpgradeController.REBIRTH_GROWTH = 2.5
 UpgradeController.REBIRTH_CASH_MULTIPLIER = 0.5
     
 function UpgradeController.CalculateCashMultiplier(rebirth: number)
-    return 1+(rebirth+0.5)
+    return 1+(rebirth*0.5)
 end
 
 function UpgradeController.CalculateRebirthCost(rebirth: number)

@@ -18,8 +18,15 @@ local closeButton: GuiButton = close.Button
 
 -- / MAIN
 local UI = {}
+UI.RenderTypes = {}
 
 function UI.Init()
+    for _, renderType in MAIN.RenderTypes:GetChildren() do
+        if UI.RenderTypes[renderType.Name] then continue end
+
+        UI.RenderTypes[renderType.Name] = require(renderType)
+    end
+
     UI.CloseConnection = closeButton.MouseButton1Click:Connect(function()
         if MAIN_UI.Enabled == true then
             MAIN_UI.Enabled = false
@@ -33,7 +40,13 @@ function UI.Render(packet)
     local renderType = packet.RenderType
     assert(renderType, Errors.NO_RENDER_TYPE)
 
+    local render = UI.RenderTypes[renderType]
+    if not render then
+        warn(string.format(Errors.RENDER_TYPE_NOT_EXISTS, renderType))
+        return
+    end
 
+    render.Render(packet)
 end
 
 return UI

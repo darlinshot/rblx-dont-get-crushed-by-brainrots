@@ -1,28 +1,38 @@
-local Players = game:GetService("Players")
-
--- / PLAYER
-local plr = Players.LocalPlayer
-local PLAYER_GUI = plr.PlayerGui
-
 -- / MODULES
 local MAIN = script
-local ROOT
-local Errors = require(MAIN.Errors)
+
+local ROOT = MAIN.Parent.Parent
+local Objects = require(ROOT.Objects)
 
 -- / UI
-local MAIN_UI = PLAYER_GUI:WaitForChild()
-local HOLDER = MAIN_UI.Holder
+local MAIN_UI = Objects.GetMainUI()
 
-local title = HOLDER.Title
-local close = title.CloseButton
-local closeButton: GuiButton = close.Button
-
-
-
+-- / MAIN
 local Render = {}
 
-function Render.Render()
+function Render.RenderUpgrade(upgrade: string, args)
+    local objects = Objects.GetUpgrade(upgrade)
 
+    local buyBtn = objects.BuyButton
+    local robuxBuyBtn = objects.RobuxBuyButton
+    local currentStat = objects.CurrentStat
+    local newStat = objects.NewStat
+    local product = objects.Product
+
+    buyBtn.Text = `${args.Cost}`
+    currentStat.Text = `+{args.CurrentStat} {upgrade}`
+    newStat.Text = `+{args.NewStat} {upgrade}`
+    product.Text = `+{args.NewStat-args.CurrentStat} {upgrade}`
+
+end
+
+function Render.Render(packet)
+    local upgrades = packet.Upgrades
+    for upgrade, upgradeArgs in upgrades do
+        Render.RenderUpgrade(upgrade, upgradeArgs)
+    end
+
+    MAIN_UI.Enabled = true
 end
 
 return Render

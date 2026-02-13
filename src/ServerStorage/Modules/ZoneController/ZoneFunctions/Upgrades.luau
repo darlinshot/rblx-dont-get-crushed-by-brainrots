@@ -25,29 +25,35 @@ Zone.OnPlayerEntered = function(plr: Player)
     local healthLvl = upgrades.Health
     local cashLvl = upgrades.Cash
 
-    local currentSpeed, newSpeed = UpgradesController.CalculateSpeedStat(speedLvl-1), UpgradesController.CalculateSpeedStat(speedLvl)
+    local currentSpeed, newSpeed = UpgradesController.CalculateSpeedStat(speedLvl), UpgradesController.CalculateSpeedStat(speedLvl+1)
     local speedCost = UpgradesController.CalculateSpeedCost(speedLvl)
 
-    local currentHealth, newHealth = UpgradesController.CalculateHealthStat(healthLvl-1), UpgradesController.CalculateHealthStat(healthLvl)
+    local currentHealth, newHealth = UpgradesController.CalculateHealthStat(healthLvl), UpgradesController.CalculateHealthStat(healthLvl+1)
     local healthCost = UpgradesController.CalculateHealthCost(healthLvl)
 
-    local currentCash, newCash = UpgradesController.CalculateTotalCash(cashLvl-1, rebirthLvl), UpgradesController.CalculateTotalCash(cashLvl, rebirthLvl)
+    local currentCash, newCash = UpgradesController.CalculateTotalCash(cashLvl, rebirthLvl), UpgradesController.CalculateTotalCash(cashLvl+1, rebirthLvl)
     local cashCost = UpgradesController.CalculateCashCost(cashLvl)
 
     local packet = {
         RenderType = renderType,
-
-        CurrentSpeed = currentSpeed,
-        NewSpeed = newSpeed,
-        SpeedCost = speedCost,
-
-        CurrentHealth = currentHealth,
-        HewHealth = newHealth,
-        HealthCost = healthCost,
-
-        CurrentCash = currentCash,
-        NewCash = newCash,
-        CashCost = cashCost
+        
+        Upgrades = {
+            Speed = {
+                CurrentStat = currentSpeed,
+                NewStat = newSpeed,
+                Cost = speedCost
+            },
+            Cash = {
+                CurrentStat = currentCash,
+                NewStat = newCash,
+                Cost = cashCost
+            },
+            Health = {
+                CurrentStat = currentHealth,
+                NewStat = newHealth,
+                Cost = healthCost
+            }   
+        }
     }
     upgradeEvent:FireClient(plr, packet)
 end
