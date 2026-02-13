@@ -5,7 +5,7 @@ local MODULES = ServerStorage.Modules
 local Zone = require(MODULES.Zone)
 
 local MAIN = script
-local MAIN_PARENT = MAIN.Parent
+local ROOT = MAIN.Parent
 
 -- / MAIN
 local ZoneContainer = {}

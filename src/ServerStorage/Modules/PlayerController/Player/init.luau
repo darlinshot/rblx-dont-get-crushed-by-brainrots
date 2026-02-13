@@ -8,8 +8,8 @@ local DataManager = require(MODULES.DataManager)
 local MAIN = script
 local Errors = require(MAIN.Errors)
 
-local MAIN_PARENT = MAIN.Parent
-local Character = require(MAIN_PARENT.Character)
+local ROOT = MAIN.Parent
+local Character = require(ROOT.Character)
 
 -- / MAIN
 local Player = {}

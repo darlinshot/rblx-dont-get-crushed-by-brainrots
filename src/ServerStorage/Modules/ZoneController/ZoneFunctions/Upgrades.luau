@@ -16,7 +16,7 @@ local upgradeEvent = REMOTE_EVENTS.Upgrade
 local Zone = {}
 
 Zone.OnPlayerEntered = function(plr: Player)
-    local render = "ShowUI"
+    local renderType = "ShowUI"
     local stats = DataManager.GetPlayerData(plr)
     local upgrades = stats.Upgrades
 
@@ -35,7 +35,7 @@ Zone.OnPlayerEntered = function(plr: Player)
     local cashCost = UpgradesController.CalculateCashCost(cashLvl)
 
     local packet = {
-        Render = render,
+        RenderType = renderType,
 
         CurrentSpeed = currentSpeed,
         NewSpeed = newSpeed,
@@ -53,10 +53,10 @@ Zone.OnPlayerEntered = function(plr: Player)
 end
 
 Zone.OnPlayerExit = function(plr: Player)
-    local render = "HideUI"
+    local renderType = "HideUI"
 
     local packet = {
-        Render = render
+        RenderType = renderType
     }
     upgradeEvent:FireClient(plr, packet)
 end

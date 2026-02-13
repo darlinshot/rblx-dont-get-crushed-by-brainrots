@@ -8,9 +8,9 @@ local plr = Players.LocalPlayer
 
 
 -- / MAIN
-return function(args)
-    local ragdollDuration = args.RagdollDuration
-    local knockbackForce = args.KnockbackForce
+return function(packet)
+    local ragdollDuration = packet.RagdollDuration
+    local knockbackForce = packet.KnockbackForce
     if not knockbackForce then return end
 
     local char = plr.Character or plr.CharacterAdded:Wait()

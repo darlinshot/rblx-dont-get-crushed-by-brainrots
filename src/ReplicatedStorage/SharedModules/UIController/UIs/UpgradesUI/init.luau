@@ -30,10 +30,10 @@ function UI.Init()
 end
 
 function UI.Render(packet)
-    local render = packet.Render
-    assert(render, Errors.NO_RENDER_TYPE)
+    local renderType = packet.RenderType
+    assert(renderType, Errors.NO_RENDER_TYPE)
 
-    
+
 end
 
 return UI

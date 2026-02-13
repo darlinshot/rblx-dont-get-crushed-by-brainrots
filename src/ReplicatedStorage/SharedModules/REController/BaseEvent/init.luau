@@ -11,9 +11,9 @@ function BaseEvent.New(remoteEvent: RemoteEvent)
 
     self.EventFunctions = {}
 
-    BaseEvent.Connection = remoteEvent.OnClientEvent:Connect(function(args)
+    BaseEvent.Connection = remoteEvent.OnClientEvent:Connect(function(packet)
         for _, func in self.EventFunctions do
-            BaseEvent:Activate(func, args)
+            BaseEvent:Activate(func, packet)
         end
     end)
 
@@ -21,9 +21,9 @@ function BaseEvent.New(remoteEvent: RemoteEvent)
     return self
 end
 
-function BaseEvent:Activate(func: (any)->any, args)
+function BaseEvent:Activate(func: (any)->any, packet)
     task.defer(function()
-        local ok, err = pcall(func, args)
+        local ok, err = pcall(func, packet)
         if not ok then
             warn("Function failed: ", err)
         end
@@ -57,7 +57,7 @@ function BaseEvent:RemoveFunction(func: ()->any)
     local i = table.find(event_functions, func)
     if not i then warn(Errors.FUNCTION_NOT_EXISTS); return end
 
-    table.remove(event_functions, i)    
+    table.remove(event_functions, i) 
 end
 
 function BaseEvent:RemoveAllFunctions()
