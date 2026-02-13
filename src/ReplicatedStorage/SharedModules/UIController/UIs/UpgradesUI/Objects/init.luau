@@ -49,6 +49,33 @@ function Objects.GetUpgrade(upgrade: string)
     objects.Product = upgradeFrame.InfoDisplay.Product
 
     return objects
+end
+
+function Objects.GetTitle()
+    local objects = {}
+
+    objects.CloseButton = title.CloseButton.Button
+    objects.Title = title.IconAndTitle.Title
+
+    return objects
+end
+
+function Objects.GetButtons()
+    local objects = {}
+    objects.UpgradeButtons = {}
+    for upgrade, _ in Objects.UpgradeContainerNames do
+        local upgrade_objects = Objects.GetUpgrade(upgrade)
+        
+        local upgrade_buttons = {}
+        upgrade_buttons.BuyButton = upgrade_objects.BuyButton
+        upgrade_buttons.RobuxBuyButton = upgrade_objects.RobuxBuyButton
+        objects.UpgradeButtons[upgrade] = upgrade_buttons
+    end
+
+    local title_objects = Objects.GetTitle()
     
+    objects.CloseButton = title_objects.CloseButton
+
+    return objects
 end
 return Objects

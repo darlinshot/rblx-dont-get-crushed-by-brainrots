@@ -14,7 +14,6 @@ function Render.RenderUpgrade(upgrade: string, args)
     local objects = Objects.GetUpgrade(upgrade)
 
     local buyBtn = objects.BuyButton
-    local robuxBuyBtn = objects.RobuxBuyButton
     local currentStat = objects.CurrentStat
     local newStat = objects.NewStat
     local product = objects.Product
@@ -27,11 +26,14 @@ function Render.RenderUpgrade(upgrade: string, args)
 end
 
 function Render.Render(packet)
-    local upgrades = packet.Upgrades
-    for upgrade, upgradeArgs in upgrades do
-        Render.RenderUpgrade(upgrade, upgradeArgs)
+    -- Packet is optional
+    if packet then
+        local upgrades = packet.Upgrades
+        for upgrade, upgradeArgs in upgrades do
+            Render.RenderUpgrade(upgrade, upgradeArgs)
+        end
     end
-
+    
     MAIN_UI.Enabled = true
 end
 
