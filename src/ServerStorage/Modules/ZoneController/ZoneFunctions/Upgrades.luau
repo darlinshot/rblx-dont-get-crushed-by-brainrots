@@ -4,7 +4,7 @@ local ServerStorage = game:GetService("ServerStorage")
 -- / MODULES
 local MODULES = ServerStorage.Modules
 local UpgradesController = require(MODULES.UpgradesController)
-local DataManager = require(MODULES.DataManager)
+local DataController = require(MODULES.DataController)
 
 -- / REMOTE EVENTS
 local REMOTES = ReplicatedStorage.Remotes

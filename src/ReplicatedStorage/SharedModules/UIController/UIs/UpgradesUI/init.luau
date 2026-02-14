@@ -12,9 +12,6 @@ local Config = require(MAIN.Config)
 local Interactions = require(MAIN.Interactions)
 local RenderTypes = require(MAIN.RenderTypes)
 
--- / UI
-local MAIN_UI = PLAYER_GUI:WaitForChild(MAIN.Name)
-
 -- / MAIN
 local UI = {}
 UI.Connections = {}

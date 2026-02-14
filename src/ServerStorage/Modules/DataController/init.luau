@@ -13,12 +13,12 @@ local Errors = require(MAIN.Errors)
 local PlayerStore = ProfileStore.New("PlayerStore", Config.DATA_TEMPLATE)
 
 -- / MODULE
-local DataManager = {}
-DataManager.PlayerData = {} -- Live data
-DataManager.DataProfiles = {} -- Saved data
+local DataController = {}
+DataController.PlayerData = {} -- Live data
+DataController.DataProfiles = {} -- Saved data
 
-function DataManager.AddPlayer(plr: Player)
-    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+function DataController.AddPlayer(plr: Player)
+    local profile = DataController.DataProfiles["Player_"..plr.UserId]
 
     if not profile then
         profile = PlayerStore:StartSessionAsync(`{plr.UserId}`, {
@@ -40,10 +40,10 @@ function DataManager.AddPlayer(plr: Player)
 
         print(string.format(Errors.LOAD_PROFILE_SUCCESS, plr.Name))
         
-        DataManager.DataProfiles["Player_"..plr.UserId] = profile
+        DataController.DataProfiles["Player_"..plr.UserId] = profile
         
         -- This data is for live game editing.
-        DataManager.PlayerData["Player_"..plr.UserId] = profile.Data
+        DataController.PlayerData["Player_"..plr.UserId] = profile.Data
 
         return profile
     else
@@ -53,33 +53,33 @@ function DataManager.AddPlayer(plr: Player)
     end
 end
 
-function DataManager.RemovePlayer(plr: Player)
-    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+function DataController.RemovePlayer(plr: Player)
+    local profile = DataController.DataProfiles["Player_"..plr.UserId]
     if profile then
         profile:EndSession()
 
-        DataManager.DataProfiles["Player_"..plr.UserId] = nil
+        DataController.DataProfiles["Player_"..plr.UserId] = nil
     end
 
-    local data = DataManager.PlayerData["Player_"..plr.UserId]
+    local data = DataController.PlayerData["Player_"..plr.UserId]
     if data then
-        DataManager.PlayerData["Player_"..plr.UserId] = nil
+        DataController.PlayerData["Player_"..plr.UserId] = nil
     end
 end
 
-function DataManager.GetPlayerProfile(plr: Player)
-    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+function DataController.GetPlayerProfile(plr: Player)
+    local profile = DataController.DataProfiles["Player_"..plr.UserId]
     if not profile then
-        return DataManager.AddPlayer(plr)
+        return DataController.AddPlayer(plr)
     end
 
     return profile
 end
 
-function DataManager.GetPlayerData(plr: Player)
-    local profile = DataManager.DataProfiles["Player_"..plr.UserId]
+function DataController.GetPlayerData(plr: Player)
+    local profile = DataController.DataProfiles["Player_"..plr.UserId]
     if not profile then
-        profile = DataManager.AddPlayer(plr)
+        profile = DataController.AddPlayer(plr)
         if not profile then
             plr:Kick(Errors.LOAD_PROFILE_FAILED)
             error(Errors.LOAD_PROFILE_FAILED)
@@ -89,4 +89,4 @@ function DataManager.GetPlayerData(plr: Player)
     return profile.Data
 end
 
-return DataManager
+return DataController

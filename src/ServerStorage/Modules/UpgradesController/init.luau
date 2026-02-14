@@ -9,108 +9,23 @@ local upgradeEvent = REMOTE_EVENTS.Upgrade
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local DataManager = require(MODULES.DataManager)
+local DataController = require(MODULES.DataController)
 
--- / FUNCTIONS
-local function Round(n: number | string, decimals: number)
-    if typeof(n) == "number" then
-        n = tostring(n)
-    end
-
-    if not decimals then decimals = 0 end
-    decimals = math.floor(decimals)
-    local formatString = `%.{decimals}f`
-
-    return tonumber(string.format(formatString, n))
-end
+local MAIN = script
+local Calculator = require(MAIN.Calculator)
 
 -- / MAIN
 local UpgradesController = {}
 
-UpgradesController.BASE_SPEED = 10
-UpgradesController.BASE_SPEED_UPGRADE_COST = 200
-UpgradesController.SPEED_GROWTH = 1.5
-UpgradesController.SPEED_COST_GROWTH = 1.15
-
-function UpgradesController.CalculateSpeedStat(level: number)
-    return Round(UpgradesController.BASE_SPEED+(level-1)*UpgradesController.SPEED_GROWTH, 2)
-end
-
-function UpgradesController.CalculateSpeedCost(level: number)
-    return Round(UpgradesController.BASE_SPEED_UPGRADE_COST*(math.pow(UpgradesController.SPEED_COST_GROWTH, level-1)))
-end
-
-UpgradesController.BASE_CASH = 1000
-UpgradesController.BASE_CASH_UPGRADE_COST = 200
-UpgradesController.BASE_CASH_GROWTH = 500
-UpgradesController.BASE_CASH_COST_GROWTH = 1.25
-
-function UpgradesController.CalculateCashStat(level: number)
-    return Round(UpgradesController.BASE_CASH+(level-1)*UpgradesController.BASE_CASH_GROWTH, 2)
-end
-
-function UpgradesController.CalculateCashCost(level: number)
-    return Round(UpgradesController.BASE_CASH_UPGRADE_COST*(math.pow(UpgradesController.BASE_CASH_COST_GROWTH, level-1)))
-end
-
-UpgradesController.BASE_HEALTH = 100
-UpgradesController.BASE_HEALTH_UPGRADE_COST = 200
-UpgradesController.HEALTH_GROWTH = 25
-UpgradesController.HEALTH_COST_GROWTH = 1.2
-
-function UpgradesController.CalculateHealthStat(level: number)
-   return Round(UpgradesController.BASE_HEALTH+(level-1)*UpgradesController.HEALTH_GROWTH, 2) 
-end
-
-function UpgradesController.CalculateHealthCost(level: number)
-   return Round(UpgradesController.BASE_HEALTH_UPGRADE_COST*(math.pow(UpgradesController.HEALTH_COST_GROWTH, level-1)))
-end
-
-UpgradesController.BASE_REBIRTH_COST = 5000
-UpgradesController.REBIRTH_GROWTH = 2.5
-UpgradesController.REBIRTH_CASH_MULTIPLIER = 0.5
-    
-function UpgradesController.CalculateCashMultiplier(rebirth: number)
-    return Round(1+(rebirth*0.5), 2)
-end
-
-function UpgradesController.CalculateRebirthCost(rebirth: number)
-   return Round(UpgradesController.BASE_REBIRTH_COST+(UpgradesController.REBIRTH_GROWTH*rebirth), 2)
-end
-
-function UpgradesController.CalculateTotalCash(level: number, rebirth: number)
-    local cash = UpgradesController.CalculateCashStat(level)
-    local multipler = UpgradesController.CalculateCashMultiplier(rebirth)
-    return math.floor(cash*multipler)
-end
-
-function UpgradesController.CalculateStats(speedLvl: number, cashLvl: number, healthLvl: number, rebirth: number)
-    local speed  = UpgradesController.CalculateSpeedStat(speedLvl)
-    local health = UpgradesController.CalculateHealthStat(healthLvl)
-    local cash = UpgradesController.CalculateTotalCash(cashLvl, rebirth)
-    
-    return {
-        Speed = speed,
-        Cash = cash,
-        Health = health
-    }
-end
-
-function UpgradesController.CalculateCosts(speedLvl: number, cashLvl: number, healthLvl: number)
-    local healthCost = UpgradesController.CalculateHealthCost(healthLvl)
-	local speedCost = UpgradesController.CalculateSpeedCost(speedLvl)
-	local cashCost = UpgradesController.CalculateCashCost(cashLvl)
-
-    return {
-        Speed = speedCost,
-        Cash = cashCost,
-        Health = healthCost
-    }
+function UpgradesController.Init()
+    for name, func in Calculator do
+        UpgradesController[name] = func
+    end
 end
 
 function UpgradesController.RenderStats(plr: Player)
 	local renderType = "ShowUI"
-    local stats = DataManager.GetPlayerData(plr)
+    local stats = DataController.GetPlayerData(plr)
 
     local rebirthLvl = stats.Rebirths
     local upgrades = stats.Upgrades

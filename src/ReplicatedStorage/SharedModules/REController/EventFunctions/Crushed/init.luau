@@ -4,9 +4,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 -- / PLAYER
 local plr = Players.LocalPlayer
 
--- / MODULES
-
-
 -- / MAIN
 return function(packet)
     local ragdollDuration = packet.RagdollDuration

@@ -3,7 +3,7 @@ local ServerStorage = game:GetService("ServerStorage")
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local DataManager = require(MODULES.DataManager)
+local DataController = require(MODULES.DataController)
 
 local MAIN = script
 local Errors = require(MAIN.Errors)
@@ -16,7 +16,7 @@ local Player = {}
 Player.__index = Player
 
 function Player.New(plr: Player)
-    local profile = DataManager.AddPlayer(plr)
+    local profile = DataController.AddPlayer(plr)
     if not profile then
        print(string.format(Errors.DATA_PROFILE_CREATION_FAILED, plr.Name)) 
        return
