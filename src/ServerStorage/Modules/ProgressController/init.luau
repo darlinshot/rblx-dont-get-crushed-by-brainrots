@@ -9,9 +9,9 @@ local DataController = require(MODULES.DataController)
 local REMOTE_EVENTS = ReplicatedStorage.Remotes.RemoteEvents
 local statsEvent = REMOTE_EVENTS.Stats
 
-local StatsController = {}
+local ProgressController = {}
 
-function StatsController.RenderMainStats(plr: Player)
+function ProgressController.RenderMainStats(plr: Player)
     local stats = DataController.GetPlayerData(plr)
     
     local packet = {
@@ -25,4 +25,4 @@ function StatsController.RenderMainStats(plr: Player)
 
 end
 
-return StatsController
+return ProgressController

@@ -5,7 +5,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local MODULES = ServerStorage.Modules
 local UpgradesController = require(MODULES.UpgradesController)
 local DataController = require(MODULES.DataController)
-local StatsController = require(MODULES.StatsController)
+local ProgressController = require(MODULES.ProgressController)
 
 local MAIN = script
 local Errors = require(MAIN.Errors)
@@ -45,7 +45,7 @@ return function(plr, packet)
         stats.Upgrades[upgrade] += 1
         stats.Cash -= upgradeCost
 
-		StatsController.RenderMainStats(plr)
+		ProgressController.RenderMainStats(plr)
         UpgradesController.UpgradePlayer(plr)
 
         -- TODO: SET SPEED/HEALTH
