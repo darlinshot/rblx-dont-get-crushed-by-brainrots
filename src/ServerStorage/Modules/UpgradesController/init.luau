@@ -11,6 +11,19 @@ local upgradeEvent = REMOTE_EVENTS.Upgrade
 local MODULES = ServerStorage.Modules
 local DataManager = require(MODULES.DataManager)
 
+-- / FUNCTIONS
+local function Round(n: number | string, decimals: number)
+    if typeof(n) == "number" then
+        n = tostring(n)
+    end
+
+    if not decimals then decimals = 0 end
+    decimals = math.floor(decimals)
+    local formatString = `%.{decimals}f`
+
+    return tonumber(string.format(formatString, n))
+end
+
 -- / MAIN
 local UpgradesController = {}
 
@@ -20,11 +33,11 @@ UpgradesController.SPEED_GROWTH = 1.5
 UpgradesController.SPEED_COST_GROWTH = 1.15
 
 function UpgradesController.CalculateSpeedStat(level: number)
-    return math.floor(UpgradesController.BASE_SPEED+(level-1)*UpgradesController.SPEED_GROWTH)
+    return Round(UpgradesController.BASE_SPEED+(level-1)*UpgradesController.SPEED_GROWTH, 2)
 end
 
 function UpgradesController.CalculateSpeedCost(level: number)
-    return math.floor(UpgradesController.BASE_SPEED_UPGRADE_COST*(math.pow(UpgradesController.SPEED_COST_GROWTH, level-1)))
+    return Round(UpgradesController.BASE_SPEED_UPGRADE_COST*(math.pow(UpgradesController.SPEED_COST_GROWTH, level-1)))
 end
 
 UpgradesController.BASE_CASH = 1000
@@ -33,11 +46,11 @@ UpgradesController.BASE_CASH_GROWTH = 500
 UpgradesController.BASE_CASH_COST_GROWTH = 1.25
 
 function UpgradesController.CalculateCashStat(level: number)
-    return math.floor(UpgradesController.BASE_CASH+(level-1)*UpgradesController.BASE_CASH_GROWTH)
+    return Round(UpgradesController.BASE_CASH+(level-1)*UpgradesController.BASE_CASH_GROWTH, 2)
 end
 
 function UpgradesController.CalculateCashCost(level: number)
-    return math.floor(UpgradesController.BASE_CASH_UPGRADE_COST*(math.pow(UpgradesController.BASE_CASH_COST_GROWTH, level-1)))
+    return Round(UpgradesController.BASE_CASH_UPGRADE_COST*(math.pow(UpgradesController.BASE_CASH_COST_GROWTH, level-1)))
 end
 
 UpgradesController.BASE_HEALTH = 100
@@ -46,11 +59,11 @@ UpgradesController.HEALTH_GROWTH = 25
 UpgradesController.HEALTH_COST_GROWTH = 1.2
 
 function UpgradesController.CalculateHealthStat(level: number)
-   return math.floor(UpgradesController.BASE_HEALTH+(level-1)*UpgradesController.HEALTH_GROWTH) 
+   return Round(UpgradesController.BASE_HEALTH+(level-1)*UpgradesController.HEALTH_GROWTH, 2) 
 end
 
 function UpgradesController.CalculateHealthCost(level: number)
-   return math.floor(UpgradesController.BASE_HEALTH_UPGRADE_COST*(math.pow(UpgradesController.HEALTH_COST_GROWTH, level-1)))
+   return Round(UpgradesController.BASE_HEALTH_UPGRADE_COST*(math.pow(UpgradesController.HEALTH_COST_GROWTH, level-1)))
 end
 
 UpgradesController.BASE_REBIRTH_COST = 5000
@@ -58,13 +71,11 @@ UpgradesController.REBIRTH_GROWTH = 2.5
 UpgradesController.REBIRTH_CASH_MULTIPLIER = 0.5
     
 function UpgradesController.CalculateCashMultiplier(rebirth: number)
-    local multiplier = 1+(rebirth*0.5)
-    
-    return tonumber(string.format("%.1f", tostring(multiplier)))
+    return Round(1+(rebirth*0.5), 2)
 end
 
 function UpgradesController.CalculateRebirthCost(rebirth: number)
-   return math.floor(UpgradesController.BASE_REBIRTH_COST+(UpgradesController.REBIRTH_GROWTH*rebirth))
+   return Round(UpgradesController.BASE_REBIRTH_COST+(UpgradesController.REBIRTH_GROWTH*rebirth), 2)
 end
 
 function UpgradesController.CalculateTotalCash(level: number, rebirth: number)
