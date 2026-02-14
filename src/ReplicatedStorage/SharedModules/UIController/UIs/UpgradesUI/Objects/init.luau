@@ -15,9 +15,7 @@ local MAIN_UI = PLAYER_GUI:WaitForChild(ROOT.Name)
 local HOLDER = MAIN_UI.Holder
 
 local title = HOLDER.Title
-
-local contents = HOLDER.Contents
-local contentsContainer = contents.Container
+local contentsContainer = HOLDER.Contents.Container
 
 -- / MAIN
 local Objects = {}
@@ -26,17 +24,9 @@ function Objects.GetMainUI()
     return MAIN_UI
 end
 
-Objects.UpgradeContainerNames = {
-    ["Speed"] = "1_Speed",
-    ["Cash"] = "2_Cash",
-    ["Health"] = "3_Health"
-}
 function Objects.GetUpgrade(upgrade: string)
-    local name = Objects.UpgradeContainerNames[upgrade]
-    assert(name, string.format(Errors.INVALID_UPGRADE, upgrade))
-
     -- Should be here so no need for error message
-    local upgradeFrame = contentsContainer:FindFirstChild(name)
+    local upgradeFrame = contentsContainer:FindFirstChild(upgrade)
     if not upgradeFrame then
         return
     end
@@ -63,7 +53,10 @@ end
 function Objects.GetButtons()
     local objects = {}
     objects.UpgradeButtons = {}
-    for upgrade, _ in Objects.UpgradeContainerNames do
+    for _, upgradeFrame in contentsContainer:GetChildren() do
+        if upgradeFrame:IsA("UIGridStyleLayout") then continue end
+
+        local upgrade = upgradeFrame.Name
         local upgrade_objects = Objects.GetUpgrade(upgrade)
         
         local upgrade_buttons = {}
