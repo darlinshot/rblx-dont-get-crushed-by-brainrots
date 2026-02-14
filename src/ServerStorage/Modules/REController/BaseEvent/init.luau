@@ -11,9 +11,9 @@ function BaseEvent.New(remoteEvent: RemoteEvent)
 
     self.EventFunctions = {}
 
-    BaseEvent.Connection = remoteEvent.OnServerEvent:Connect(function(packet)
+    BaseEvent.Connection = remoteEvent.OnServerEvent:Connect(function(plr, packet)
         for _, func in self.EventFunctions do
-            BaseEvent:Activate(func, packet)
+            BaseEvent:Activate(func, plr, packet)
         end
     end)
 
@@ -21,9 +21,9 @@ function BaseEvent.New(remoteEvent: RemoteEvent)
     return self
 end
 
-function BaseEvent:Activate(func: (any)->any, packet)
+function BaseEvent:Activate(func: (any)->any, plr: Player, packet)
     task.defer(function()
-        local ok, err = pcall(func, packet)
+        local ok, err = pcall(func, plr, packet)
         if not ok then
             warn("Function failed: ", err)
         end
