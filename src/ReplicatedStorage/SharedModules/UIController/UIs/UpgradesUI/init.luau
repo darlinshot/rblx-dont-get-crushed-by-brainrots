@@ -7,57 +7,49 @@ local PLAYER_GUI = plr.PlayerGui
 
 -- / MODULES
 local MAIN = script
-local Errors = require(MAIN.Errors)
 local Objects = require(MAIN.Objects)
 local Config = require(MAIN.Config)
+local Interactions = require(MAIN.Interactions)
+local RenderTypes = require(MAIN.RenderTypes)
 
 -- / UI
 local MAIN_UI = PLAYER_GUI:WaitForChild(MAIN.Name)
 
--- / CONFIG
-
 -- / MAIN
 local UI = {}
-UI.RenderTypes = {}
-UI.ButtonConnections = {}
+UI.Connections = {}
 
 function UI.Init()
-    for _, renderType in MAIN.RenderTypes:GetChildren() do
-        if UI.RenderTypes[renderType.Name] then continue end
-
-        UI.RenderTypes[renderType.Name] = require(renderType)
-    end    
+    RenderTypes.Init()
 
     local buttons = Objects.GetButtons()
     for upgrade, upgradeBtn in buttons.UpgradeButtons do
+        local upgrade_connections = {}
+
         local buyBtn = upgradeBtn.BuyButton
-        local rbxBuyButton = upgradeBtn.RobuxBuyButton
-       
+
+        upgrade_connections.BuyButtonConnection = buyBtn.Activated:Connect(function()
+            Interactions.OnBuyButtonClicked(upgrade)
+        end)
+
+        local rbxBuyBtn = upgradeBtn.RobuxBuyButton
+        
         local info =  MarketplaceService:GetProductInfoAsync(Config.DeveloperProducts.Upgrades[upgrade], Enum.InfoType.Product)
         local rbxPrice = info.PriceInRobux
-        rbxBuyButton.Text = `{rbxPrice}`
+        rbxBuyBtn.Text = `{rbxPrice}`
+
+        upgrade_connections.RobuxBuyButtonConnection = rbxBuyBtn.Activated:Connect(function()
+            Interactions.OnRobuxBuyButtonClicked(upgrade)
+        end)
+
+        UI.Connections[upgrade] = upgrade_connections
     end
 
-    UI.CloseConnection = buttons.CloseButton.MouseButton1Click:Connect(function()
-        if MAIN_UI.Enabled == true then
-            UI.RenderTypes.HideUI.Render()
-        else
-            UI.RenderTypes.ShowUI.Render()
-        end
-    end)
+    UI.Connections.CloseConnection = buttons.CloseButton.Activated:Connect(Interactions.OnCloseButonClicked)
 end
 
 function UI.Render(packet)
-    local renderType = packet.RenderType
-    assert(renderType, Errors.NO_RENDER_TYPE)
-
-    local render = UI.RenderTypes[renderType]
-    if not render then
-        warn(string.format(Errors.RENDER_TYPE_NOT_EXISTS, renderType))
-        return
-    end
-
-    render.Render(packet)
+    RenderTypes.Render(packet)
 end
 
 return UI
