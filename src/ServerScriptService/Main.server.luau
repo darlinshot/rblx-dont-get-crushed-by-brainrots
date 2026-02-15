@@ -2,14 +2,14 @@ local ServerStorage = game.ServerStorage
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local UpgradesController = require(MODULES.UpgradesController)
+local ProgressController = require(MODULES.ProgressController)
 local PlayerController = require(MODULES.PlayerController)
 local GameController = require(MODULES.GameController)
 local REController = require(MODULES.REController)
 
 -- / MAIN
 PlayerController.Init()
-UpgradesController.Init()
+ProgressController.Init()
 REController.LoadAll()
 
 GameController.Init()

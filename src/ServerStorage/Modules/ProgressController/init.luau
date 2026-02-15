@@ -5,10 +5,20 @@ local ServerStorage = game:GetService("ServerStorage")
 local MODULES = ServerStorage.Modules
 local DataController = require(MODULES.DataController)
 
+local MAIN = script
+local UpgradesController = require(MAIN.UpgradesController)
+
 -- / REMOTE EVENTS
 local REMOTE_EVENTS = ReplicatedStorage.Remotes.RemoteEvents
 local renderUIRE = REMOTE_EVENTS.RenderUI
+
+-- / MAIN
 local ProgressController = {}
+ProgressController.UpgradesController = UpgradesController
+
+function ProgressController.Init()
+    UpgradesController.Init()
+end
 
 function ProgressController.RenderMainStats(plr: Player)
     local stats = DataController.GetPlayerData(plr)

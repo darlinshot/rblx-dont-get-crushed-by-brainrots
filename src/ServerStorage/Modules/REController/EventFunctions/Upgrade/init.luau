@@ -3,7 +3,7 @@ local ServerStorage = game:GetService("ServerStorage")
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local UpgradesController = require(MODULES.UpgradesController)
+local ProgressController = require(MODULES.ProgressController)
 local DataController = require(MODULES.DataController)
 local ProgressController = require(MODULES.ProgressController)
 
@@ -25,7 +25,7 @@ return function(plr, packet)
 	local healthLvl = upgrades.Health
 	local cashLvl = upgrades.Cash
 
-	local costs = UpgradesController.CalculateCosts(speedLvl, cashLvl, healthLvl)
+	local costs = ProgressController.UpgradesController.CalculateCosts(speedLvl, cashLvl, healthLvl)
 
 	local upgradeCost = costs[upgrade]
 	assert(upgradeCost, string.format(Errors.UPGRADE_NOT_EXISTS, upgrade))
@@ -46,7 +46,7 @@ return function(plr, packet)
         stats.Cash -= upgradeCost
 
 		ProgressController.RenderMainStats(plr)
-        UpgradesController.UpgradePlayer(plr)
+        ProgressController.UpgradesController.UpgradePlayer(plr)
 
         -- TODO: SET SPEED/HEALTH
     end)
