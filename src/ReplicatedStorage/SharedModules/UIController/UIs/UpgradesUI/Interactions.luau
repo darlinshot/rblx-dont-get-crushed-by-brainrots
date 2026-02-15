@@ -6,10 +6,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local plr = Players.LocalPlayer
 
 -- / MODULES
+local SHARED_MODULES = ReplicatedStorage.SharedModules
+local DeveloperProducts = require(SHARED_MODULES.DeveloperProducts)
+
 local MAIN = script
 
 local ROOT = MAIN.Parent
-local Config = require(ROOT.Config)
 local RenderTypes = require(ROOT.RenderTypes)
 local Errors = require(ROOT.Errors)
 
@@ -29,7 +31,7 @@ function Interactions.OnBuyButtonClicked(upgrade: string)
 end
 
 function Interactions.OnRobuxBuyButtonClicked(upgrade: string)
-    local productId = Config.DeveloperProducts.Upgrades[upgrade]
+    local productId = DeveloperProducts.Upgrades[upgrade]
     assert(productId, Errors.PRODUCT_ID_NOT_EXISTS)
 
     MarketplaceService:PromptProductPurchase(plr, productId)

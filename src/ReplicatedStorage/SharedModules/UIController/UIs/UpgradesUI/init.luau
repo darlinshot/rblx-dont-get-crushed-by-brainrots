@@ -1,14 +1,17 @@
 local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- / PLAYER
 local plr = Players.LocalPlayer
 local PLAYER_GUI = plr.PlayerGui
 
 -- / MODULES
+local SHARED_MODULES = ReplicatedStorage.SharedModules
+local DeveloperProducts = require(SHARED_MODULES.DeveloperProducts)
+
 local MAIN = script
 local Objects = require(MAIN.Objects)
-local Config = require(MAIN.Config)
 local Interactions = require(MAIN.Interactions)
 local RenderTypes = require(MAIN.RenderTypes)
 
@@ -31,7 +34,7 @@ function UI.Init()
 
         local rbxBuyBtn = upgradeBtn.RobuxBuyButton
         
-        local info =  MarketplaceService:GetProductInfoAsync(Config.DeveloperProducts.Upgrades[upgrade], Enum.InfoType.Product)
+        local info =  MarketplaceService:GetProductInfoAsync(DeveloperProducts.Upgrades[upgrade], Enum.InfoType.Product)
         local rbxPrice = info.PriceInRobux
         rbxBuyBtn.Text = `{rbxPrice}`
 

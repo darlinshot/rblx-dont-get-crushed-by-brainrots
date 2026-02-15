@@ -6,6 +6,7 @@ local ProgressControllers = require(MODULES.ProgressControllers)
 local PlayerController = require(MODULES.PlayerController)
 local GameController = require(MODULES.GameController)
 local REController = require(MODULES.REController)
+local Marketplace = require(MODULES.Marketplace)
 
 -- / MAIN
 PlayerController.Init()
