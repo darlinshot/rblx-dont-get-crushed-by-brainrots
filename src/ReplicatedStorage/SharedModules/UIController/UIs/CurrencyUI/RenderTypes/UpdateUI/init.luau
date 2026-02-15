@@ -9,14 +9,14 @@ local Objects = require(ROOT.Objects)
 local Render = {}
 
 function Render.Render(packet)
-    local stat_objects = Objects.GetStatObjects()
-    local stats = packet.Stats
+    local currency_objects = Objects.GetCurrencyObjects()
+    local data = packet.Data
 
-    for stat, amountText in stat_objects do
-        local amount = stats[stat]
+    for currency, amountText in currency_objects do
+        local amount = data[currency]
         if not amount then continue end
 
-        local format = RenderFormats[stat]
+        local format = RenderFormats[currency]
         if format then
             amountText.Text = string.format(format, amount)
         else

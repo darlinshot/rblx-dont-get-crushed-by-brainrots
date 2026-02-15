@@ -5,9 +5,6 @@ local plr = Players.LocalPlayer
 local PLAYER_GUI = plr.PlayerGui
 
 -- / MODULES
-local MAIN = script
-local Errors = require(MAIN.Errors)
-
 local ROOT = script.Parent
 
 -- / UI
@@ -29,7 +26,7 @@ function Objects.GetWins()
     return HOLDER.Wins.Amount
 end
 
-function Objects.GetStatObjects()
+function Objects.GetCurrencyObjects()
     return {
         Cash = Objects.GetCash(),
         Wins = Objects.GetWins()

@@ -3,9 +3,9 @@ local ServerStorage = game:GetService("ServerStorage")
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local ProgressController = require(MODULES.ProgressController)
+local ProgressControllers = require(MODULES.ProgressControllers)
 local DataController = require(MODULES.DataController)
-local ProgressController = require(MODULES.ProgressController)
+local ProgressControllers = require(MODULES.ProgressControllers)
 
 local MAIN = script
 local Errors = require(MAIN.Errors)
@@ -15,17 +15,17 @@ return function(plr, packet)
 	local upgrade = packet.Upgrade
 	assert(upgrade, Errors.NO_UPGRADE_PROVIDED)
 
-	local stats = DataController.GetPlayerData(plr)
+	local data = DataController.GetPlayerData(plr)
 
-	local plrCash = stats.Cash
+	local plrCash = data.Cash
 
-	local rebirthLvl = stats.Rebirths
-	local upgrades = stats.Upgrades
+	local rebirthLvl = data.Rebirths
+	local upgrades = data.Upgrades
 	local speedLvl = upgrades.Speed
 	local healthLvl = upgrades.Health
 	local cashLvl = upgrades.Cash
 
-	local costs = ProgressController.UpgradesController.CalculateCosts(speedLvl, cashLvl, healthLvl)
+	local costs = ProgressControllers.UpgradesController.CalculateCosts(speedLvl, cashLvl, healthLvl)
 
 	local upgradeCost = costs[upgrade]
 	assert(upgradeCost, string.format(Errors.UPGRADE_NOT_EXISTS, upgrade))
@@ -38,15 +38,14 @@ return function(plr, packet)
 
 		return
 	end
-
 	-- local newStats = UpgradesController.CalculateStats(speedLvl + 1, cashLvl + 1, healthLvl + 1, rebirthLvl)
     
     local ok, err = pcall(function()
-        stats.Upgrades[upgrade] += 1
-        stats.Cash -= upgradeCost
+        data.Upgrades[upgrade] += 1
+        data.Cash -= upgradeCost
 
-		ProgressController.RenderMainStats(plr)
-        ProgressController.UpgradesController.UpgradePlayer(plr)
+		ProgressControllers.CurrenciesController.RenderCurrencies(plr)
+        ProgressControllers.UpgradesController.UpgradePlayer(plr)
 
         -- TODO: SET SPEED/HEALTH
     end)

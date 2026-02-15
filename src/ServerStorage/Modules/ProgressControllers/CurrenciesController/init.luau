@@ -5,28 +5,23 @@ local ServerStorage = game:GetService("ServerStorage")
 local MODULES = ServerStorage.Modules
 local DataController = require(MODULES.DataController)
 
-local MAIN = script
-local UpgradesController = require(MAIN.UpgradesController)
-
 -- / REMOTE EVENTS
 local REMOTE_EVENTS = ReplicatedStorage.Remotes.RemoteEvents
 local renderUIRE = REMOTE_EVENTS.RenderUI
 
--- / MAIN
-local ProgressController = {}
-ProgressController.UpgradesController = UpgradesController
+local CurrenciesController = {}
 
-function ProgressController.Init()
-    UpgradesController.Init()
+function CurrenciesController.Init()
+    
 end
 
-function ProgressController.RenderMainStats(plr: Player)
+function CurrenciesController.RenderCurrencies(plr: Player)
     local stats = DataController.GetPlayerData(plr)
     
     local packet = {
         UI = "CurrencyUI",
         RenderType = "UpdateUI",
-        Stats = {
+        Data = {
             Cash = stats.Cash,
             Wins = stats.Wins
         }
@@ -35,4 +30,4 @@ function ProgressController.RenderMainStats(plr: Player)
 
 end
 
-return ProgressController
+return CurrenciesController

@@ -11,9 +11,9 @@ function BaseEvent.New(remoteEvent: RemoteEvent)
 
     self.EventFunctions = {}
 
-    BaseEvent.Connection = remoteEvent.OnServerEvent:Connect(function(plr, packet)
+    self.Connection = remoteEvent.OnServerEvent:Connect(function(plr, packet)
         for _, func in self.EventFunctions do
-            BaseEvent:Activate(func, plr, packet)
+            self:Activate(func, plr, packet)
         end
     end)
 

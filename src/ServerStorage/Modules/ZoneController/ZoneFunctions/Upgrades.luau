@@ -3,7 +3,7 @@ local ServerStorage = game:GetService("ServerStorage")
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
-local ProgressController = require(MODULES.ProgressController)
+local ProgressControllers = require(MODULES.ProgressControllers)
 local DataController = require(MODULES.DataController)
 
 -- / REMOTE EVENTS
@@ -16,7 +16,7 @@ local renderUIRE = REMOTE_EVENTS.RenderUI
 local Zone = {}
 
 Zone.OnPlayerEntered = function(plr: Player)
-    ProgressController.UpgradesController.RenderStats(plr)
+    ProgressControllers.UpgradesController.RenderStats(plr)
 end
 
 Zone.OnPlayerExit = function(plr: Player)
