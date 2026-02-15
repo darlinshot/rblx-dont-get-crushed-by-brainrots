@@ -10,7 +10,7 @@ function Crusher.New(model: Model, startPosition: Vector3, goalPosition: Vector3
     local speed = model:GetAttribute("Speed")
     local damage = model:GetAttribute("Damage")
     local pushDistance = model:GetAttribute("PushDistance")
-    if not speed then warn(string.format(Errors.MISSING_ATTRIBUTE, "Speed")) return end
+    if not speed then speed = 100 end
     if not damage then damage = speed*0.65 end
     if not pushDistance then pushDistance = speed*0.75 end
 
