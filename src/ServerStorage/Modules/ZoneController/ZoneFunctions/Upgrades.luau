@@ -10,7 +10,7 @@ local DataController = require(MODULES.DataController)
 local REMOTES = ReplicatedStorage.Remotes
 local REMOTE_EVENTS = REMOTES.RemoteEvents
 
-local upgradeEvent = REMOTE_EVENTS.Upgrade
+local renderUIRE = REMOTE_EVENTS.RenderUI
 
 -- / MAIN
 local Zone = {}
@@ -20,12 +20,12 @@ Zone.OnPlayerEntered = function(plr: Player)
 end
 
 Zone.OnPlayerExit = function(plr: Player)
-    local renderType = "HideUI"
 
     local packet = {
-        RenderType = renderType
+        UI = "UpgradesUI",
+        RenderType = "HideUI"
     }
-    upgradeEvent:FireClient(plr, packet)
+    renderUIRE:FireClient(plr, packet)
 end
 
 return Zone

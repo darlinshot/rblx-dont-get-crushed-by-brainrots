@@ -7,21 +7,21 @@ local DataController = require(MODULES.DataController)
 
 -- / REMOTE EVENTS
 local REMOTE_EVENTS = ReplicatedStorage.Remotes.RemoteEvents
-local statsEvent = REMOTE_EVENTS.Stats
-
+local renderUIRE = REMOTE_EVENTS.RenderUI
 local ProgressController = {}
 
 function ProgressController.RenderMainStats(plr: Player)
     local stats = DataController.GetPlayerData(plr)
     
     local packet = {
+        UI = "CurrencyUI",
         RenderType = "UpdateUI",
         Stats = {
             Cash = stats.Cash,
             Wins = stats.Wins
         }
     }
-    statsEvent:FireClient(plr, packet)
+    renderUIRE:FireClient(plr, packet)
 
 end
 

@@ -5,7 +5,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local REMOTES = ReplicatedStorage.Remotes
 local REMOTE_EVENTS = REMOTES.RemoteEvents
 
-local upgradeEvent = REMOTE_EVENTS.Upgrade
+local renderUIRE = REMOTE_EVENTS.RenderUI
 
 -- / MODULES
 local MODULES = ServerStorage.Modules
@@ -38,6 +38,7 @@ function UpgradesController.RenderStats(plr: Player)
     local costs = UpgradesController.CalculateCosts(speedLvl, cashLvl, healthLvl)
 
     local packet = {
+        UI = "UpgradesUI",
         RenderType = renderType,
         
         Upgrades = {
@@ -58,7 +59,7 @@ function UpgradesController.RenderStats(plr: Player)
             }   
         }
     }
-    upgradeEvent:FireClient(plr, packet)
+    renderUIRE:FireClient(plr, packet)
 end
 
 function UpgradesController.UpgradePlayer(plr: Player)

@@ -20,7 +20,7 @@ end
 function UIController.Render(uiName: string, packet)
     local controller = UIController.Controllers[uiName]
     if not controller then
-        warn(Errors.UI_NOT_EXISTS)
+        warn(string.format(Errors.UI_NOT_EXISTS, uiName))
         return
     end
 
