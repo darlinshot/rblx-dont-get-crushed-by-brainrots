@@ -19,9 +19,9 @@ function Render.RenderUpgrade(upgrade: string, args)
     local product = objects.Product
 
     buyBtn.Text = `${args.Cost}`
-    currentStat.Text = `+{args.CurrentStat} {upgrade}`
-    newStat.Text = `+{args.NewStat} {upgrade}`
-    product.Text = `+{args.NewStat-args.CurrentStat} {upgrade}`
+    currentStat.Text = `{args.CurrentStat} {upgrade}`
+    newStat.Text = `{args.NewStat} {upgrade}`
+    product.Text = `+ {args.NewStat-args.CurrentStat} {upgrade}`
 
 end
 

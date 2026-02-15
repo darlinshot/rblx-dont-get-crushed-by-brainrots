@@ -15,11 +15,11 @@ function CurrenciesController.Init()
     
 end
 
-function CurrenciesController.RenderCurrencies(plr: Player)
+function CurrenciesController.RenderAll(plr: Player)
     local stats = DataController.GetPlayerData(plr)
     
     local packet = {
-        UI = "CurrencyUI",
+        UI = "CurrenciesUI",
         RenderType = "UpdateUI",
         Data = {
             Cash = stats.Cash,

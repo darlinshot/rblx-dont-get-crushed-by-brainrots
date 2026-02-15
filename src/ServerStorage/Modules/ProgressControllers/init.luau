@@ -2,9 +2,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 
 -- / MODULES
-local MODULES = ServerStorage.Modules
-local DataController = require(MODULES.DataController)
-
 local MAIN = script
 
 -- / MAIN
@@ -18,9 +15,15 @@ function ProgressControllers.Init()
         local ok, err = pcall(function()
 			local load = require(controller)
             if load.Init then load.Init() end
+            
 			ProgressControllers[controller.Name] = load
         end)
     end
+end
+
+function ProgressControllers.RenderAllData(plr: Player)
+    ProgressControllers.CurrenciesController.RenderAll(plr)
+	ProgressControllers.UpgradesController.RenderStats(plr)
 end
 
 return ProgressControllers

@@ -17,7 +17,6 @@ return function(packet)
     local hum: Humanoid = char:FindFirstChild("Humanoid")
     if not (root and hum) then return end
 
-    -- TODO: Ragdoll and then knock back
     root:ApplyImpulse(knockbackForce)
     hum:ChangeState(Enum.HumanoidStateType.Physics)
     

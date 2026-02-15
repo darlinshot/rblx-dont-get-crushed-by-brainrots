@@ -14,8 +14,6 @@ function ZoneContainer.New(container: BasePart)
     local self = {}
     local zone = Zone.new(container)
 
-    
-
     setmetatable(self, ZoneContainer)
     return self
 end

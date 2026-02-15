@@ -62,9 +62,4 @@ function UpgradesController.RenderStats(plr: Player)
     renderUIRE:FireClient(plr, packet)
 end
 
-function UpgradesController.UpgradePlayer(plr: Player)
-    -- TODO: ADD SPEED + HEALTH
-    UpgradesController.RenderStats(plr) 
-end
-
 return UpgradesController

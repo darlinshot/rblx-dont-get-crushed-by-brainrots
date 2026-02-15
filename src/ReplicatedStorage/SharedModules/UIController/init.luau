@@ -14,14 +14,19 @@ function UIController.Init()
         controller.Init()
 
         UIController.Controllers[name] = controller
-    end    
+    end
 end
 
 function UIController.Render(uiName: string, packet)
     local controller = UIController.Controllers[uiName]
     if not controller then
-        warn(string.format(Errors.UI_NOT_EXISTS, uiName))
-        return
+        UIController.Init()
+		
+        controller = UIController.Controllers[uiName]
+        if not controller then
+			warn(string.format(Errors.UI_NOT_EXISTS, uiName))
+			return
+        end
     end
 
     controller.Render(packet)

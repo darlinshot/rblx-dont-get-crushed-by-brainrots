@@ -1,9 +1,9 @@
 local ServerStorage = game:GetService("ServerStorage")
 
-
 -- / MODULES
 local MODULES = ServerStorage.Modules
 local DataController = require(MODULES.DataController)
+local ProgressControllers = require(MODULES.ProgressControllers)
 
 local MAIN = script
 local Errors = require(MAIN.Errors)
@@ -23,8 +23,13 @@ function Player.New(plr: Player)
     end
 
     local self = {}
+    self.Player = plr
+    self.PlayerName = plr.Name
     self.DataProfile = profile
     self.CharacterAddedConnection = plr.CharacterAdded:Connect(Character.OnCharacterAdded)
+
+	-- Cash, Upgrade related data(CurrentStat, NewStat, Cost)
+	ProgressControllers.CurrenciesController.RenderAll(plr)
 
     if plr.Character then
         if not plr.Character:GetAttribute("SetupComplete") == true then
@@ -37,8 +42,10 @@ function Player.New(plr: Player)
 end
 
 function Player:Destroy()
-    self.DataProfile = nil
+    DataController.RemovePlayer(self.Player)
+
     self.CharacterAddedConnection:Disconnect()
+    table.clear(self)
 end
 
 return Player

@@ -13,13 +13,13 @@ Zone.OnPlayerEntered = function(plr: Player)
     local rebirths = data.Rebirths
     local upgrades = data.Upgrades
 
-    local cashToGive = ProgressControllers.UpgradesController.CalculateTotalCash(upgrades.Cash, rebirths)
+	local cashToGive = ProgressControllers.UpgradesController.CalculateTotalCash(upgrades.Cash, rebirths)
     data.Cash += cashToGive
     data.Wins += 1
 
     plr:LoadCharacterAsync()
-    
-    ProgressControllers.CurrenciesController.RenderCurrencies(plr)
+
+    ProgressControllers.CurrenciesController.RenderAll(plr)
 end
 
 return Zone

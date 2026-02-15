@@ -48,6 +48,7 @@ function CrusherManager.SetCrusherActive(crusher)
     table.insert(CrusherManager.ActiveCrushers, crusher)
 
     crusher.Model.Parent = CRUSHERS_HOLDER
+    crusher:PlaySound()
 end
 
 function CrusherManager.SetCrusherInactive(crusher)
@@ -60,10 +61,6 @@ function CrusherManager.SetCrusherInactive(crusher)
     table.insert(CrusherManager.InactiveCrushers, crusher)
 
     crusher.Model.Parent = nil
-end
-
-function CrusherManager.RemoveCrusher(crusher)
-
 end
 
 function CrusherManager.SetAllActive()
@@ -124,14 +121,16 @@ function CrusherManager.Update(delta: number, crusher)
         end
 
         local damage = crusher:GetDamage()
+        local pushDistance = crusher:GetPushDistance()
 
         local args = {
-            KnockbackForce = (crusherRoot.CFrame.LookVector+Vector3.new(0, 1, 0))*(damage*root.AssemblyMass),
+            KnockbackForce = (crusherRoot.CFrame.LookVector+Vector3.new(0, 1, 0))*(pushDistance*root.AssemblyMass),
             RagdollDuration = Config.STUN_DURATION
         }    
 
         hum:TakeDamage(damage)
         CrusherManager.LastHit["Player_"..plr.UserId] = now
+        
         crushedEvent:FireClient(plr, args)
     end
 end

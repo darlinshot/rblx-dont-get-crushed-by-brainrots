@@ -44,10 +44,12 @@ return function(plr, packet)
         data.Upgrades[upgrade] += 1
         data.Cash -= upgradeCost
 
-		ProgressControllers.CurrenciesController.RenderCurrencies(plr)
-        ProgressControllers.UpgradesController.UpgradePlayer(plr)
+		-- Health and Speed
+		ProgressControllers.StatsController.UpdatePlayer(plr)
 
-        -- TODO: SET SPEED/HEALTH
+		-- Cash, Upgrade related data(CurrentStat, NewStat, Cost)
+		ProgressControllers.RenderAllData(plr)
+
     end)
     if not ok then warn(`Error setting upgrade: {err}`) return end
 end

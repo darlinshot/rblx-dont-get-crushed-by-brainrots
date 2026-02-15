@@ -9,7 +9,7 @@ local ROOT = script.Parent
 
 -- / UI
 local MAIN_UI = PLAYER_GUI:WaitForChild(ROOT.Name)
-local HOLDER = MAIN_UI.Holder
+local HOLDER = MAIN_UI:WaitForChild("Holder")
 
 -- / MAIN
 local Objects = {}

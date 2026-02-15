@@ -8,7 +8,13 @@ function Crusher.New(model: Model, startPosition: Vector3, goalPosition: Vector3
     if not root then warn(Errors.NO_ROOT_PART) return end
 
     local speed = model:GetAttribute("Speed")
+    local damage = model:GetAttribute("Damage")
+    local pushDistance = model:GetAttribute("PushDistance")
     if not speed then warn(string.format(Errors.MISSING_ATTRIBUTE, "Speed")) return end
+    if not damage then damage = speed*0.65 end
+    if not pushDistance then pushDistance = speed*0.75 end
+
+    local sound = root:FindFirstChild("Sound")
 
     local self = {}
     self.Name = model.Name
@@ -17,8 +23,13 @@ function Crusher.New(model: Model, startPosition: Vector3, goalPosition: Vector3
     self.Root = root
 
     self.Speed = speed
-    self.Force = Crusher.CalculateForce(speed, 1)
+    self.PushDistance = pushDistance
+    self.Damage = damage
     self.GoalPosition = goalPosition
+
+    if sound then
+        self.Sound = sound
+    end
 
     self.ERROR_MARGIN = 0.2
     self.REACHED_TARGET = false
@@ -27,11 +38,6 @@ function Crusher.New(model: Model, startPosition: Vector3, goalPosition: Vector3
 
     setmetatable(self, Crusher)
     return self
-end
-
-function Crusher.CalculateForce(speed: number, k: number)
-    if not k then k = 1 end
-    return k * (speed^1.3)
 end
 
 function Crusher:Update(delta: number)
@@ -64,10 +70,16 @@ function Crusher:GetRootPart()
 end
 
 function Crusher:GetDamage()
-    -- Speed = damage
-    -- Change if you want
-    
-    return self.Speed
+    return self.Damage
+end
+
+function Crusher:GetPushDistance()
+    return self.PushDistance
+end
+
+function Crusher:PlaySound()
+    local sound = self.Sound
+    if sound and not sound.Playing then sound:Play() end
 end
 
 function Crusher:Destroy()
