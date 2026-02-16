@@ -19,20 +19,15 @@ function World.New(worldModel: Folder)
     -- Zones
     local zones = worldModel:FindFirstChild("Zones")
     
-    local finish = zones.Finish
-    local upgrades = zones.Upgrades
-
     local self = {}
 
     self.StartPosition = startPosition.CFrame.Position
     self.GoalPosition = goalPos.CFrame.Position
     self.PlayerSpawnPosition = plrSpawnPos.CFrame.Position
 
-    local finishZone = ZoneController.AddZone(finish)
-    local upgradesZone = ZoneController.AddZone(upgrades)
-
-    self.FinishZone = finishZone
-    self.UpgradesZone = upgradesZone
+    for _, zone in zones:GetChildren() do
+        self[zone.Name] = ZoneController.AddZone(zone)
+    end
 
     setmetatable(self, World)
     return self
