@@ -19,4 +19,9 @@ Config.BASE_REBIRTH_COST = 5000
 Config.REBIRTH_GROWTH = 2.5
 Config.REBIRTH_CASH_MULTIPLIER = 0.5
 
+Config.ERROR_MESSAGE = {
+    Message = "You don't have enough cash!",
+    Color = Color3.fromRGB(255, 0, 0)
+}
+
 return Config

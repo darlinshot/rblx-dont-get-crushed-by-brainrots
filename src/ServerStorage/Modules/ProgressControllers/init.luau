@@ -22,6 +22,9 @@ function ProgressControllers.Init()
 			ProgressControllers[controller.Name] = load
         end)
     end
+
+	ProgressControllers.RenderCurrencies = ProgressControllers.CurrenciesController.RenderAll
+	ProgressControllers.RenderStats = ProgressControllers.UpgradesController.RenderStats
 end
 
 function ProgressControllers.UpgradePlayer(plr: Player, upgrade: string, checkCash: boolean)
@@ -39,9 +42,10 @@ function ProgressControllers.UpgradePlayer(plr: Player, upgrade: string, checkCa
     return true
 end
 
-function ProgressControllers.RenderAllData(plr: Player)
-    ProgressControllers.CurrenciesController.RenderAll(plr)
-	ProgressControllers.UpgradesController.RenderStats(plr)
-end
 
+
+function ProgressControllers.RenderAllData(plr: Player)
+    ProgressControllers.RenderCurrencies(plr)
+	ProgressControllers.RenderStats(plr)
+end
 return ProgressControllers

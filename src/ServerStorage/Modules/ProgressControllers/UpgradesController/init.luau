@@ -10,10 +10,12 @@ local renderUIRE = REMOTE_EVENTS.RenderUI
 -- / MODULES
 local MODULES = ServerStorage.Modules
 local DataController = require(MODULES.DataController)
+local Notifications = require(MODULES.Notifications)
 
 local MAIN = script
 local Calculator = require(MAIN.Calculator)
 local Errors = require(MAIN.Errors)
+local Config = require(MAIN.Config)
 
 -- / MAIN
 local UpgradesController = {}
@@ -91,7 +93,12 @@ function UpgradesController.UpgradePlayer(plr: Player, upgrade: string, checkCas
 
 	if checkCash == true then
         if upgradeCost > plrCash then
-			print("POOR")
+            local packet = {
+                UI = "ExclusiveShopUI",
+                RenderType = "ShowUI"
+            }
+            Notifications.ShowNotification(plr, Config.ERROR_MESSAGE)
+            renderUIRE:FireClient(plr, packet)
 			-- TODO: NOTIFICATION SERVICE TO
 			-- ANNOUNCE TO PLAYER THAT THEY
 			-- DON'T HAVE ENOUGH MONEY
