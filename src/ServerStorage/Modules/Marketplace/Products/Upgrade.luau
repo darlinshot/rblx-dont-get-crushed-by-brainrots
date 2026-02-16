@@ -20,14 +20,18 @@ export type ReceiptInfo = Types.ReceiptInfo
 
 -- MODULE
 local Product = {}
-Product.Upgrade = "Cash"
-Product.ProductID = DeveloperProducts.Upgrades[Product.Upgrade]
+Product.ProductIDs = DeveloperProducts.Upgrades
+Product.InverseIDs = {}
 
 Product.Callback = function(receiptInfo: ReceiptInfo): boolean
     local plr = Players:GetPlayerByUserId(receiptInfo.PlayerId)
     if not plr then return false end
     
-    return ProgressControllers.UpgradePlayer(plr, Product.Upgrade, false)
+    local productID = receiptInfo.ProductId
+    local upgrade = Product.InverseIDs[tostring(productID)]
+    if not upgrade then return false end
+
+    return ProgressControllers.UpgradePlayer(plr, upgrade, false)
 end
 
 return Product

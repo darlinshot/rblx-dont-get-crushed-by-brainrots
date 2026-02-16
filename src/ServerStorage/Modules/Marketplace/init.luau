@@ -1,5 +1,5 @@
 -- NAMING RULES
--- 1. .module suffix for main
+-- 1. Don't need anymore. (.module suffix for main) 
 -- 2. All modules must have first letter capitalised
 -- 3. All keys must have first letter uncapitalised
 -- 4. Config keys but have "_" as first character
@@ -27,19 +27,22 @@ local Marketplace = {}
 Marketplace.Products = {}
 
 for _, product in products:GetChildren() do
-    local load: ProductModule = require(product)
-    local productID = load.ProductID
+    local Product: ProductModule = require(product)
+    local productIDs = Product.ProductIDs
     
-    load.Parent = products
+    Product.Parent = products
 
-    Marketplace.Products[productID] = load
+    for productName, productID in productIDs do
+		Marketplace.Products[tostring(productID)] = Product
+		Product.InverseIDs[tostring(productID)] = productName
+    end
 end
 
 mps.ProcessReceipt = function(receiptInfo: ReceiptInfo): GlobalCallback
     local productID = receiptInfo.ProductId
     if not productID then return NotProcessed end
 
-    local Product: ProductModule = Marketplace.Products[productID]
+    local Product: ProductModule = Marketplace.Products[tostring(productID)]
     if not Product then return NotProcessed end
 
     local callback = Product.Callback

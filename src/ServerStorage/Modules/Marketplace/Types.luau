@@ -9,9 +9,10 @@ export type ReceiptInfo = {
 }
 
 export type ProductModule = {
-    productID: number,
-    callback: (ReceiptInfo) -> boolean,
-    parent: {}
+    ProductIDs: {},
+    InverseIDs: {},
+    Callback: (ReceiptInfo) -> boolean,
+    Parent: {}
 }
 
 export type GlobalCallback = (ReceiptInfo) -> Enum.ProductPurchaseDecision

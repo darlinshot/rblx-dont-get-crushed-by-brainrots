@@ -1,3 +1,4 @@
+local MessagingService = game:GetService("MessagingService")
 local ServerStorage = game.ServerStorage
 
 -- / ASSETS
@@ -9,10 +10,14 @@ local MODULES = ServerStorage.Modules
 
 local CrusherManager = require(MODULES.CrusherManager)
 local WorldController = require(MODULES.WorldController)
+local Notifications = require(MODULES.Notifications)
 
 local MAIN = script
 local Errors = require(MAIN.Errors)
 local Config = require(MAIN.Config)
+
+-- / NOTIFICATIONS
+local notif = "Brainrot %s has spawned!"
 
 -- / Miscs
 local Random = Random.new()
@@ -44,6 +49,7 @@ function GameController.StartGame()
                 -- TODO: SORT AND GACHA BASED ON RARITY
 
                 local model = CRUSHER_MODELS[Random:NextInteger(1, #CRUSHER_MODELS)]
+                Notifications.ShowNotification(nil, {Message = string.format(notif, model.Name)})
 
                 local goalPos = world.GoalPosition
                 local startPos = world.StartPosition
