@@ -51,7 +51,7 @@ function GameController.StartGame()
                 CrusherManager.NewCrusher(model, startPos, goalPos)
             end
 
-            task.wait(Config.SPAWN_INTERVALS)
+            task.wait(Random:NextInteger(Config.MIN_SPAWN_INTERVAL, Config.MAX_SPAWN_INTERVAL))
         end
     end)
 end

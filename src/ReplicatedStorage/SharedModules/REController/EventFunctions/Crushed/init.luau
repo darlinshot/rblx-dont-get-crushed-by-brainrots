@@ -1,8 +1,12 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
 
 -- / PLAYER
 local plr = Players.LocalPlayer
+
+-- / SFX
+local hitSFX = SoundService:WaitForChild("HitSFX")
 
 -- / MAIN
 return function(packet)
@@ -19,7 +23,8 @@ return function(packet)
 
     root:ApplyImpulse(knockbackForce)
     hum:ChangeState(Enum.HumanoidStateType.Physics)
-    
+    SoundService:PlayLocalSound(hitSFX)
+
     if ragdollDuration then
         task.wait(ragdollDuration)
         hum:ChangeState(Enum.HumanoidStateType.GettingUp)
