@@ -7,7 +7,7 @@ local ProgressControllers = require(MODULES.ProgressControllers)
 local Notifications = require(MODULES.Notifications)
 
 -- / NOTIFICATIONS
-local winMessage = "You finished and got %i Cash! Remember to upgrade!"
+local winMessage = "You got %i Cash! Remember to upgrade!"
 local notifColor = Color3.fromRGB(0, 255, 0)
 
 -- / MAIN

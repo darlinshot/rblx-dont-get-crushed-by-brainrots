@@ -20,7 +20,21 @@ function Character.OnCharacterAdded(char: Model)
 	local plr = Players:GetPlayerFromCharacter(char)
     ProgressControllers.StatsController.UpdatePlayer(plr)
 
+    -- Root
     root.CollisionGroup = "CharacterRootPart"
+    
+    local rootY = root.Size.Y
+    local rootZ = root.Size.Z
+
+    local trailAtt0 = Instance.new("Attachment")
+	trailAtt0.Position = Vector3.new(0, rootY / 2, 0)
+    trailAtt0.Name = "TrailAttachment0"
+    trailAtt0.Parent = root
+
+    local trailAtt1 = trailAtt0:Clone()
+    trailAtt1.Position = Vector3.new(0, -rootY / 2, 0)
+    trailAtt1.Name = "TrailAttachment1"
+    trailAtt1.Parent = root
 
     root:SetAttribute("SetupComplete")
 end
