@@ -1,11 +1,14 @@
 local GroupService = game:GetService("GroupService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local DEFAULT_GROUP_ID = 1078990756
+-- / MODULES
+local SHARED_MODULES = ReplicatedStorage.SharedModules
+local IDs = require(SHARED_MODULES.IDs)
 
 -- / MAIN
 return function (packet)
     local groupID = packet.GroupID
-    if not groupID then groupID = DEFAULT_GROUP_ID end
+    if not groupID then groupID = IDs.GROUP_ID end
 
     GroupService:PromptJoinAsync(groupID)
 end
